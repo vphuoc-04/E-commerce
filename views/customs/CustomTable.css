@@ -1,0 +1,42 @@
+.custom-table-container .describte {
+    padding: 0px 0px 20px 0px;
+}
+
+.custom-table-container .describte p{
+    color:#d5265ee3;
+}
+
+table.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+table.custom-table th,
+table.custom-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+table.custom-table th {
+    background: #f4f4f4;
+    text-align: left;
+}
+.text-center {
+    text-align: center;
+}
+
+.button-action {
+    display: flex;
+    gap: 5px;
+}
+
+.btn {
+    padding: 5px 8px;
+    border-radius: 4px;
+    color: #fff;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-edit { background: teal; }
+.btn-delete { background: #ec4758; }
+.btn-view { background: #f8ac59; }
+

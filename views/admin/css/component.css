@@ -1,0 +1,140 @@
+/* ASIDE */
+aside {
+    background-color: #d5265ee3;
+    width: 20%;
+    min-height: 100vh;
+    padding: 10px;
+    box-sizing: border-box;
+    color: white;
+}
+
+aside h4 {
+    margin: 20px 0 10px;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #fff;
+    opacity: 0.9;
+}
+
+aside ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+aside li {
+    margin: 6px 0;
+    font-family: monospace;
+} 
+
+aside a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    color: #fff;
+    text-decoration: none;
+    transition: background 0.3s ease;
+    width: 150px;
+}
+
+aside a:hover,
+aside a.active { 
+    background-color: rgba(255, 255, 255, 0.2); 
+    color: white; 
+}
+
+.submenu { 
+    display: none; padding-left: 20px; 
+}
+.has-sub.open > .submenu { 
+    display: block; 
+}
+.has-sub > a:after {
+    content: '\f0d7'; 
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    float: right;
+}
+.has-sub.open > a:after {
+    content: '\f0d8'; 
+}
+
+/* BREADCRUMB */
+.breadcrumb {
+    margin: 10px 20px;
+    font-size: 14px;
+    display: flex;
+    align-items: start;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: start;
+    margin: 0 0px 0px 0px; 
+    padding: 30px 0px 30px 10px;
+    box-shadow: 1px 1px 5px rgb(0, 0, 0, 0.2);
+
+
+}
+
+.breadcrumb .route {
+    display: flex;
+    gap: 10px;
+}
+
+
+
+
+/* FOOTER */
+footer {
+    display: flex;
+    justify-content: center;
+    background-color: #13646d;
+    height: 50px;
+    align-items: center;
+}
+/* FOOTER */
+
+/* HEADER */
+header {
+    display: flex;
+    justify-content: center;
+    background-color: white;
+    height: 50px;
+    box-shadow: 1px 1px 5px rgb(0, 0, 0, 0.2);
+
+    align-items: center;
+}
+
+*{
+    margin: 0;
+}
+/* HEADER */
+
+/* CONTAINER */
+
+.container {
+    display: flex;
+}
+/* CONTAINER */
+
+/*.HEADERANDCONTENT */
+.headerAndContent {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+/*.HEADERANDCONTENT */
+
+/* MAIN */
+main {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 5px rgb(0, 0, 0, 0.2);
+    border: 1px solid rgb(0, 0, 0, 0.2);
+    margin: 20px;
+    
+}
+/* MAIN */
