@@ -1,6 +1,20 @@
 <?php 
 $page = $_GET['page'] ?? 'dashboard';
-$pageNumber = isset($_GET['page_number']) ? intval($_GET['page_number']) : 1;
+$model = $page; 
+
+if (isset($_GET['page_number'])) {
+    $pageNumber = (int)$_GET['page_number'];
+    
+} elseif (isset($_GET['page']) && is_numeric($_GET['page'])) {
+    $pageNumber = (int)$_GET['page'];
+    $page = basename($_SERVER['REQUEST_URI']);
+    $page = explode('?', $page)[0];
+    $model = $page; 
+
+} else {
+    $pageNumber = 1;
+}
+
 if ($pageNumber < 1) $pageNumber = 1;
 
 switch ($page) {
@@ -21,8 +35,21 @@ switch ($page) {
         ];
         break;
 
+    case 'users':
+        $content = 'views/admin/pages/users.php';
+        $title = "users";
+        $breadcrumb = [
+            "pageTitle" => "QUẢN LÝ DANH SÁCH TẤT CẢ NGƯỜI DÙNG",
+            "items" => [
+                ["label" => "Người dùng"],
+                ["label" => "Tất cả người dùng"],
+                ["label" => "Danh sách"]
+            ]
+        ];
+        break;
+
     case 'catalogues':
-        $content = 'views/admin/pages/user_catalogue.php';
+        $content = 'views/admin/pages/userCatalogue.php';
         $title = "catalogues";
         $breadcrumb = [
             "pageTitle" => "QUẢN LÝ DANH SÁCH TẤT CẢ NHÓM NGƯỜI DÙNG",
@@ -32,7 +59,7 @@ switch ($page) {
                 ["label" => "Danh sách"]
             ]
         ];
-    break;
+        break;
 
     case 'customers':
         $content = 'views/admin/pages/customers.php';

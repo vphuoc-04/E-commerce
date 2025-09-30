@@ -75,8 +75,6 @@ aside a.active {
     margin: 0 0px 0px 0px; 
     padding: 30px 0px 30px 10px;
     box-shadow: 1px 1px 5px rgb(0, 0, 0, 0.2);
-
-
 }
 
 .breadcrumb .route {
@@ -135,6 +133,5 @@ main {
     box-shadow: 1px 1px 5px rgb(0, 0, 0, 0.2);
     border: 1px solid rgb(0, 0, 0, 0.2);
     margin: 20px;
-    
 }
 /* MAIN */

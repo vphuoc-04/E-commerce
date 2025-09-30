@@ -1,14 +1,14 @@
 <?php
-include 'views/constants/user.php';
+include 'views/constants/user_catalogue.php';
 
 $pageNumber = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
 if ($pageNumber < 1) $pageNumber = 1;
 
-$apiUrl = "http://localhost/webbanhang/apis/UserApi.php?route=index&page=$pageNumber";
+$apiUrl = "http://localhost/webbanhang/apis/UserCatalogueApi.php?route=index&page=$pageNumber";
 $response = file_get_contents($apiUrl);
 $result = json_decode($response, true);
 
-$user = $result['data']['users'] ?? [];
+$user = $result['data']['catalogues'] ?? [];
 $pagination = $result['data']['pagination'] ?? [];
 
 $columns = $table;
@@ -20,7 +20,7 @@ $describe = $describe;
 <html lang="vi">
 <head>
     <meta charset="utf-8">
-    <title>Quản lý khách hàng</title>
+    <title>Quản lý Catalogue Người dùng</title>
     <link rel="stylesheet" href="http://localhost/WEBBANHANG/views/admin/css/users.css">
 </head>
 <body>

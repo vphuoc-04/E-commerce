@@ -1,3 +1,11 @@
+.custom-table-container {
+    flex: 1;                /* chiếm hết chiều cao còn lại trong main */
+    width: 100%;            /* luôn full chiều rộng */
+    display: flex;
+    flex-direction: column;
+}
+
+
 .custom-table-container .describte {
     padding: 0px 0px 20px 0px;
 }

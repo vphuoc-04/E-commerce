@@ -2,10 +2,18 @@
     RewriteEngine On
     RewriteBase /webbanhang/
 
-    # Nếu request là file/thư mục thật thì bỏ qua
+    # Chuyển đổi URL từ users thành index.php?page=users
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^([a-zA-Z0-9_-]+)$ index.php?page=$1 [L,QSA]
+    
+    # Chuyển đổi URL từ users?page=2 thành index.php?page=users&page=2
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^([a-zA-Z0-9_-]+)\?page=([0-9]+)$ index.php?page=$1&page=$2 [L,QSA]
 
-    # Chuyển mọi request sang index.php
-    RewriteRule ^(.*)$ index.php?page=$1 [L,QSA]
+    # Cho phép truy cập trực tiếp các file thật
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule . - [L]
 </IfModule>
