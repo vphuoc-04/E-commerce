@@ -1,5 +1,5 @@
 <?php
-include 'views/constants/customer.php';
+include 'views/constants/admin/customer.php';
 
 $customer = [
     

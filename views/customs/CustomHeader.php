@@ -12,9 +12,6 @@ $user = $_SESSION['user'] ?? null;
             <div class="user-menu">
                 <img src="<?= htmlspecialchars($user['img'] ?? 'http://localhost/WEBBANHANG/assets/default-avatar.png') ?>" 
                      alt="avatar" class="avatar" id="userAvatar">
-
-                
-
                 <div class="dropdown" id="dropdownMenu">
                     <ul>
                         <li><a href="#">Thông tin cá nhân</a></li>
@@ -23,7 +20,7 @@ $user = $_SESSION['user'] ?? null;
                 </div>
             </div>
         <?php else: ?>
-            <a href="index.php?page=login">Đăng nhập</a>
+            <a href="login">Đăng nhập</a>
         <?php endif; ?>
     </div>
 </div>
@@ -34,7 +31,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const dropdown = document.getElementById("dropdownMenu");
     const logoutBtn = document.getElementById("logoutBtn");
 
-    // Hàm xoá cookie (có path)
     function deleteCookie(name, path = "/") {
         document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=" + path + ";";
     }
@@ -47,14 +43,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (logoutBtn) {
-    logoutBtn.addEventListener("click", function (e) {
-        e.preventDefault();
-        window.location.href = "views/admin/pages/logout.php"; 
-    });
-}
+        logoutBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            window.location.href = "views/admin/pages/logout.php"; 
+        });
+    }
 
-
-    // Ẩn dropdown khi click ngoài
     document.addEventListener("click", function (e) {
         if (!e.target.closest(".user-menu")) {
             dropdown.classList.remove("show");

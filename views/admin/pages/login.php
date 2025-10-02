@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             $_SESSION['user'] = $result['data'];
             
-            header("Location: /WEBBANHANG/dashboard");
+            header("Location: dashboard");
             exit;
         } else {
             $errors[] = "Đăng nhập thất bại";

@@ -9,8 +9,8 @@
 <body>
     <aside>
         <?php 
-            include 'views/constants/menu.php'; 
-            $currentPage = $_GET['page'] ?? 'dashboard';
+            include 'views/constants/admin/menu.php'; 
+            $currentPage = getCurrentPage();
         ?>
         <?php foreach ($menu as $section): ?>
             <h4><?= $section['label'] ?></h4>
@@ -19,14 +19,15 @@
                     <?php 
                         $isActive = in_array($currentPage, $item['active']) ? 'active' : '';
                         $hasSub = !empty($item['links']);
+                        $isParentActive = $hasSub && in_array($currentPage, array_merge(...array_column($item['links']['items'], 'active')));
                     ?>
-                    <li class="<?= $hasSub ? 'has-sub' : '' ?>">
+                    <li class="<?= $hasSub ? 'has-sub' : '' ?> <?= $isActive || $isParentActive ? 'open active' : '' ?>">
                         <a href="<?= $item['to'] ?>" class="<?= $isActive ?>">
                             <i class="<?= $item['icon'] ?>"></i> <?= $item['label'] ?>
                         </a>
 
                         <?php if ($hasSub): ?>
-                            <ul class="submenu">
+                            <ul class="submenu" style="<?= $isParentActive ? 'display:block;' : '' ?>">
                                 <?php foreach ($item['links']['items'] as $sub): ?>
                                     <?php 
                                         $isSubActive = in_array($currentPage, $sub['active']) ? 'active' : '';

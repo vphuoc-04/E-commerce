@@ -1,5 +1,5 @@
 <?php
-include 'views/constants/voucher.php';
+include 'views/constants/admin/voucher.php';
 
 $voucher = [
     

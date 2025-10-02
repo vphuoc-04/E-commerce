@@ -1,5 +1,5 @@
 <?php
-include 'views/constants/user_catalogue.php';
+include 'views/constants/admin/userCatalogue.php';
 
 $pageNumber = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
 if ($pageNumber < 1) $pageNumber = 1;

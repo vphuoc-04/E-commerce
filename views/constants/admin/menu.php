@@ -1,21 +1,31 @@
 <?php
 function getCurrentPage() {
-    $currentPath = $_SERVER['REQUEST_URI'];
-    $pathParts = explode('?', $currentPath);
-    $pageName = basename($pathParts[0]);
-    
-    if ($pageName == 'index.php' || empty($pageName)) {
+    // lấy phần path (không có query string)
+    $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    $path = trim($path, '/'); // bỏ 2 đầu dấu /
+
+    // nếu path rỗng (ví dụ truy cập root hoặc /?page=...), fallback về ?page
+    if ($path === '') {
         return $_GET['page'] ?? 'dashboard';
     }
-    
-    return $pageName;
+    // lấy segment cuối của path
+    $segments = explode('/', $path);
+    $last = end($segments);
+
+    // nếu segment cuối là script (ví dụ index.php) thì dùng ?page
+    $scriptBasename = basename($_SERVER['SCRIPT_NAME']); // thường là "index.php"
+    if ($last === $scriptBasename) {
+        return $_GET['page'] ?? 'dashboard';
+    }
+    // loại .php nếu có (ví dụ users.php -> users)
+    $last = preg_replace('/\.php$/', '', $last);
+
+    return $last;
 }
 
 function createMenuLink($pageName, $pageNumber = 1) {
     return "$pageName?page=$pageNumber";
 }
-
-$currentPage = getCurrentPage();
 
 $menu = [
     [
@@ -25,9 +35,8 @@ $menu = [
                 "icon" => "fa-solid fa-house",
                 "label" => "Tổng quan",
                 "active" => ["dashboard"],
-                "to" => createMenuLink("dashboard"),
+                "to" => "dashboard",
                 "links" => [],
-                "isActive" => in_array($currentPage, ["dashboard"])
             ],
         ],
     ],
@@ -46,25 +55,21 @@ $menu = [
                             "label" => "Tất cả người dùng",
                             "active" => ["users"],
                             "to" => createMenuLink("users"),
-                            "isActive" => in_array($currentPage, ["users"])
                         ],
                         [
                             "icon" => "fa-solid fa-user-tie",
                             "label" => "Nhân viên",
                             "active" => ["employees"],
                             "to" => createMenuLink("employees"),
-                            "isActive" => in_array($currentPage, ["employees"])
                         ],
                         [
                             "icon" => "fa-solid fa-users",
                             "label" => "Khách hàng",
                             "active" => ["customers"],
                             "to" => createMenuLink("customers"),
-                            "isActive" => in_array($currentPage, ["customers"])
                         ]
                     ]
                 ],
-                "isActive" => in_array($currentPage, ["users", "employees", "customers"])
             ],
             [
                 "icon" => "fa-solid fa-box",
@@ -72,7 +77,6 @@ $menu = [
                 "active" => ["catalogues"],
                 "to" => createMenuLink("catalogues"),
                 "links" => [],
-                "isActive" => in_array($currentPage, ["catalogues"])
             ],
             [
                 "icon" => "fa-solid fa-box",
@@ -80,7 +84,6 @@ $menu = [
                 "active" => ["products"],
                 "to" => createMenuLink("products"),
                 "links" => [],
-                "isActive" => in_array($currentPage, ["products"])
             ],
             [
                 "icon" => "fa-solid fa-file-invoice",
@@ -88,7 +91,6 @@ $menu = [
                 "active" => ["orders"],
                 "to" => createMenuLink("orders"),
                 "links" => [],
-                "isActive" => in_array($currentPage, ["orders"])
             ],
             [
                 "icon" => "fa-solid fa-tags",
@@ -96,7 +98,6 @@ $menu = [
                 "active" => ["vouchers"],
                 "to" => createMenuLink("vouchers"),
                 "links" => [],
-                "isActive" => in_array($currentPage, ["vouchers"])
             ]
         ]
     ],
@@ -109,7 +110,6 @@ $menu = [
                 "active" => ["reports"],
                 "to" => createMenuLink("reports"),
                 "links" => [],
-                "isActive" => in_array($currentPage, ["reports"])
             ]
         ]
     ]

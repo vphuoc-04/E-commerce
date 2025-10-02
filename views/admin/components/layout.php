@@ -20,7 +20,7 @@
 
     <?php
     if (!isset($_COOKIE['token'])) {
-        header("Location: /WEBBANHANG/login");
+        header("Location: login");
         exit();
     }
 

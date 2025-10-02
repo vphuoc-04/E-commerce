@@ -2,17 +2,32 @@
     RewriteEngine On
     RewriteBase /webbanhang/
 
-    # Chuyển đổi URL từ users thành index.php?page=users
+    # -------------------------------
+    # ADMIN ROUTES
+    # -------------------------------
+    # /admin/users  -> index.php?page=users
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^([a-zA-Z0-9_-]+)$ index.php?page=$1 [L,QSA]
-    
-    # Chuyển đổi URL từ users?page=2 thành index.php?page=users&page=2
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^([a-zA-Z0-9_-]+)\?page=([0-9]+)$ index.php?page=$1&page=$2 [L,QSA]
+    RewriteRule ^admin/([a-zA-Z0-9_-]+)$ index.php?page=$1 [L,QSA]
 
-    # Cho phép truy cập trực tiếp các file thật
+    # /admin/users?page=2 -> index.php?page=users&page=2
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^admin/([a-zA-Z0-9_-]+)\?page=([0-9]+)$ index.php?page=$1&page=$2 [L,QSA]
+
+    # -------------------------------
+    # CLIENT ROUTES
+    # -------------------------------
+    # /products        -> index.php?client=products
+    # /cart            -> index.php?client=cart
+    # /checkout        -> index.php?client=checkout
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^([a-zA-Z0-9_-]+)$ index.php?client=$1 [L,QSA]
+
+    # -------------------------------
+    # Nếu file hoặc thư mục thật thì giữ nguyên
+    # -------------------------------
     RewriteCond %{REQUEST_FILENAME} -f [OR]
     RewriteCond %{REQUEST_FILENAME} -d
     RewriteRule . - [L]

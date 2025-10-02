@@ -19,6 +19,6 @@ if (isset($_COOKIE['PHPSESSID'])) {
     setcookie("PHPSESSID", "", time() - 3600, "/");
 }
 
-header("Location: /WEBBANHANG/login");
+header("Location: login");
 
 exit;

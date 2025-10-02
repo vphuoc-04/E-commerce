@@ -1,5 +1,5 @@
 <?php
-include 'views/constants/user.php';
+include 'views/constants/admin/user.php';
 
 $pageNumber = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
 if ($pageNumber < 1) $pageNumber = 1;

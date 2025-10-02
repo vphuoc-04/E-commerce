@@ -1,5 +1,5 @@
 <?php
-include 'views/constants/product.php';
+include 'views/constants/admin/product.php';
 $product = [
     
 ];

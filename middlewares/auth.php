@@ -5,7 +5,7 @@ function requireAuth() {
     $token = $_COOKIE['token'] ?? null;
 
     if (!$token) {
-        header("Location: login&expired=1");
+        header("Location: login");
         exit;
     }
 
@@ -40,7 +40,7 @@ function requireAuth() {
         setcookie("token", "", time() - 3600, "/");
         setcookie("refresh_token", "", time() - 3600, "/");
         session_destroy();
-        header("Location: login&expired=1");
+        header("Location: login");
         exit;
     }
 }
