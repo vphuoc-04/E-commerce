@@ -1,8 +1,8 @@
 <?php
 $describe = [
     [
-        "title" => "QUẢN LÝ THÔNG TIN NHÓM NGƯỜI DÙNG",
-        "description" => "Đây là trang quản lý thông tin nhóm người dùng, với các chức năng lọc bên dưới."
+        "title" => "QUẢN LÝ THÔNG TIN NHÓM SẢN PHẨM",
+        "description" => "Đây là trang quản lý thông tin nhóm sản phẩm, với các chức năng lọc bên dưới."
     ]
 ];
 

@@ -86,6 +86,13 @@ $menu = [
                 "links" => [],
             ],
             [
+                "icon" => "fa-solid fa-box",
+                "label" => "Quản lý nhóm sản phẩm",
+                "active" => ["categories"],
+                "to" => createMenuLink("categories"),
+                "links" => [],
+            ],
+            [
                 "icon" => "fa-solid fa-file-invoice",
                 "label" => "Đơn hàng",
                 "active" => ["orders"],

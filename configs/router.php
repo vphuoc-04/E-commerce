@@ -131,6 +131,18 @@ if ($page) {
             ];
             break;
 
+        case 'categories':
+            $content = 'views/admin/pages/productCategory.php';
+            $title = "$adminTitle | Nhóm Sản phẩm";
+            $breadcrumb = [
+                "pageTitle" => "QUẢN LÝ DANH SÁCH NHÓM SẢN PHẨM",
+                "items" => [
+                    ["label" => "Nhóm sản phẩm"],
+                    ["label" => "Danh sách"]
+                ]
+            ];
+            break;
+
         case 'vouchers':
             $content = 'views/admin/pages/vouchers.php';
             $title = "$adminTitle | Khuyến mãi";

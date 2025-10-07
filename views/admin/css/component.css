@@ -1,3 +1,7 @@
+*{
+    margin: 0;
+}
+
 /* ASIDE */
 aside {
     background-color: #d5265ee3;
@@ -106,10 +110,6 @@ header {
     align-items: center;
 }
 
-*{
-    margin: 0;
-}
-/* HEADER */
 
 /* CONTAINER */
 
