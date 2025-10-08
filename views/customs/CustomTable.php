@@ -5,7 +5,7 @@ if (!isset($columns) || !isset($data)) {
     return;
 }
 ?>
-<link rel="stylesheet" href="http://localhost/WEBBANHANg/views/customs/CustomTable.css">
+<link rel="stylesheet" href="http://localhost/WEBBANHANg/views/customs/css/CustomTable.css">
 
 <?php include __DIR__ . '/../states/DataChangeState.php'; ?>
 

@@ -17,9 +17,9 @@ $table = [
         "name" => "Ảnh",
         "render" => function($item) {
             if (!empty($item["image"])) {
-                return "<img src='{$item["image"]}' alt='product' style='width:40px;height:40px;border-radius:8px;object-fit:cover;' />";
+                return "<img src='{$item["image"]}' alt='' style='width:40px;height:40px;border-radius:8px;object-fit:cover;' />";
             }
-            return "<div style='width:40px;height:40px;border-radius:8px;background:#eee;display:flex;align-items:center;justify-content:center;'>N/A</div>";
+            return "<div style='width:40px;height:40px;border-radius:8px;background:#eee;display:flex;align-items:center;justify-content:center;'></div>";
         }
     ],
     [
@@ -28,7 +28,10 @@ $table = [
     ],
     [
         "name" => "Loại sản phẩm",
-        "render" => fn($item) => "<span>" . ($item['categoryName'] ?? 'Không có danh mục') . "</span>"
+        "render" => function($item) {
+            $categoryName = $item['category']['name'] ?? 'Không có';
+            return "<span>" . htmlspecialchars($categoryName) . "</span>";
+        }
     ],
     [
         "name" => "Đơn giá",

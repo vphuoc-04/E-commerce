@@ -6,12 +6,20 @@
 aside {
     background-color: #d5265ee3;
     width: 20%;
-    min-height: 100vh;
+    min-width: 250px; /* Đảm bảo tối thiểu không nhỏ hơn */
+    max-width: 250px; /* Giữ kích thước cố định, không giãn */
+    height: 100vh; /* luôn cao 100% viewport */
+    overflow-y: auto; /* có thể cuộn khi nội dung vượt quá */
+    overflow-x: hidden; /* không tràn ngang */
     padding: 10px;
     box-sizing: border-box;
     color: white;
-}
+    flex-shrink: 0; /* KHÔNG cho phép co lại khi container hẹp */
 
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
 aside h4 {
     margin: 20px 0 10px;
     font-size: 14px;
@@ -24,47 +32,102 @@ aside h4 {
 aside ul {
     list-style: none;
     margin: 0;
-    padding: 0;
+    padding-left: 0; /* Đã sửa: giảm padding-left */
+    width: 100%; /* Đã thêm: chiếm toàn bộ chiều rộng */
 }
 
 aside li {
     margin: 6px 0;
     font-family: monospace;
+    width: 100%; /* Đã thêm: chiếm toàn bộ chiều rộng */
 } 
 
+/* ĐÃ SỬA: Áp dụng cho tất cả link menu */
 aside a {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 10px 12px;
+    padding: 10px 15px; /* Đã sửa: tăng padding ngang */
     border-radius: 6px;
     color: #fff;
     text-decoration: none;
-    transition: background 0.3s ease;
-    width: 150px;
+    transition: background 0.3s ease, color 0.3s ease; /* Đã thêm: transition cho color */
+    width: 100%; /* Đã sửa: chiếm toàn bộ chiều rộng */
+    box-sizing: border-box; /* Đã thêm: đảm bảo padding không làm tràn */
 }
 
-aside a:hover,
+/* ĐÃ SỬA: Hiệu ứng hover và active */
+aside a:hover {
+    background-color: rgba(255, 255, 255, 0.15); /* Đã điều chỉnh: màu nhẹ hơn */
+    color: #fff;
+}
+
 aside a.active { 
-    background-color: rgba(255, 255, 255, 0.2); 
+    background-color: rgba(255, 255, 255, 0.25); /* Đã điều chỉnh: màu đậm hơn cho active */
     color: white; 
+    font-weight: bold; /* Đã thêm: làm nổi bật active */
 }
 
 .submenu { 
-    display: none; padding-left: 20px; 
+    display: none; 
+    padding-left: 0; /* Đã sửa: giảm padding */
+    width: 100%; /* Đã thêm: chiếm toàn bộ chiều rộng */
 }
+
 .has-sub.open > .submenu { 
     display: block; 
 }
+
+.has-sub {
+    position: relative;
+    width: 100%; /* Đã thêm: chiếm toàn bộ chiều rộng */
+}
+
+.has-sub > a {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-right: 40px; /* Đã tăng: chừa khoảng trống cho icon */
+    width: 100%; /* Đã thêm: chiếm toàn bộ chiều rộng */
+}
+
 .has-sub > a:after {
-    content: '\f0d7'; 
+    content: '\f0d7'; /* mũi tên xuống */
     font-family: "Font Awesome 6 Free";
     font-weight: 900;
-    float: right;
+    position: absolute;
+    right: 15px; /* Đã điều chỉnh: vị trí phù hợp với padding mới */
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none; /* không ảnh hưởng click */
+    transition: transform 0.3s ease; /* Đã thêm: hiệu ứng chuyển động */
 }
+
 .has-sub.open > a:after {
-    content: '\f0d8'; 
+    content: '\f0d7'; /* Đã sửa: giữ nguyên icon, chỉ xoay */
+    transform: translateY(-50%) rotate(180deg); /* Đã thêm: xoay mũi tên */
 }
+
+/* ĐÃ THÊM: Style cho submenu items */
+.submenu li {
+    margin: 2px 0; /* Đã điều chỉnh: margin nhỏ hơn */
+}
+
+.submenu a {
+    padding: 10px 15px 10px 30px; /* Đã thêm: indent cho submenu */
+    /* background-color: rgba(255, 255, 255, 0.05); */
+    font-size: 0.95em; /* Đã thêm: font nhỏ hơn một chút */
+}
+
+.submenu a:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Đã điều chỉnh: màu hover cho submenu */
+}
+
+.submenu a.active {
+    background-color: rgba(255, 255, 255, 0.2); 
+    /* border-left: 3px solid rgba(255, 255, 255, 0.8);  */
+}
+
 
 /* BREADCRUMB */
 .breadcrumb {

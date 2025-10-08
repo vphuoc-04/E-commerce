@@ -46,7 +46,7 @@ $menu = [
             [
                 "icon" => "fa-solid fa-users",
                 "label" => "Người dùng",
-                "active" => ["users", "employees", "customers"], 
+                "active" => ["users", "employees", "customers", "catalogues"], 
                 "to" => "#", 
                 "links" => [
                     "items" => [
@@ -67,30 +67,46 @@ $menu = [
                             "label" => "Khách hàng",
                             "active" => ["customers"],
                             "to" => createMenuLink("customers"),
-                        ]
+                        ],
+                        [
+                            "icon" => "fa-solid fa-box",
+                            "label" => "Quản lý nhóm người dùng",
+                            "active" => ["catalogues"],
+                            "to" => createMenuLink("catalogues"),
+                        ],
                     ]
                 ],
             ],
             [
                 "icon" => "fa-solid fa-box",
-                "label" => "Quản lý nhóm người dùng",
-                "active" => ["catalogues"],
-                "to" => createMenuLink("catalogues"),
-                "links" => [],
-            ],
-            [
-                "icon" => "fa-solid fa-box",
-                "label" => "Quản lý sản phẩm",
-                "active" => ["products"],
-                "to" => createMenuLink("products"),
-                "links" => [],
-            ],
-            [
-                "icon" => "fa-solid fa-box",
-                "label" => "Quản lý nhóm sản phẩm",
-                "active" => ["categories"],
-                "to" => createMenuLink("categories"),
-                "links" => [],
+                "label" => "Sản phẩm",
+                "active" => ["products", "categories", "vouchers"], 
+                "to" => "#", 
+                "links" => [
+                    "items" => [
+                        [
+                            "icon" => "fa-solid fa-box",
+                            "label" => "Quản lý sản phẩm",
+                            "active" => ["products"],
+                            "to" => createMenuLink("products"),
+                            "links" => [],
+                        ],
+                        [
+                            "icon" => "fa-solid fa-box",
+                            "label" => "Quản lý nhóm sản phẩm",
+                            "active" => ["categories"],
+                            "to" => createMenuLink("categories"),
+                            "links" => [],
+                        ],
+                        [
+                            "icon" => "fa-solid fa-tags",
+                            "label" => "Khuyến mãi",
+                            "active" => ["vouchers"],
+                            "to" => createMenuLink("vouchers"),
+                            "links" => [],
+                        ]
+                    ]
+                ]
             ],
             [
                 "icon" => "fa-solid fa-file-invoice",
@@ -99,13 +115,6 @@ $menu = [
                 "to" => createMenuLink("orders"),
                 "links" => [],
             ],
-            [
-                "icon" => "fa-solid fa-tags",
-                "label" => "Khuyến mãi",
-                "active" => ["vouchers"],
-                "to" => createMenuLink("vouchers"),
-                "links" => [],
-            ]
         ]
     ],
     [

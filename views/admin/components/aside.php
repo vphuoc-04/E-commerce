@@ -20,9 +20,10 @@
                         $isActive = in_array($currentPage, $item['active']) ? 'active' : '';
                         $hasSub = !empty($item['links']);
                         $isParentActive = $hasSub && in_array($currentPage, array_merge(...array_column($item['links']['items'], 'active')));
+                        $isOpen = $isParentActive; // Tách biệt open và active
                     ?>
-                    <li class="<?= $hasSub ? 'has-sub' : '' ?> <?= $isActive || $isParentActive ? 'open active' : '' ?>">
-                        <a href="<?= $item['to'] ?>" class="<?= $isActive ?>">
+                    <li class="<?= $hasSub ? 'has-sub' : '' ?> <?= $isOpen ? 'open' : '' ?> <?= $isActive ? 'active' : '' ?>">
+                        <a href="<?= $hasSub ? '#' : $item['to'] ?>" class="<?= $isActive ?>">
                             <i class="<?= $item['icon'] ?>"></i> <?= $item['label'] ?>
                         </a>
 
@@ -47,12 +48,41 @@
     </aside>
 
     <script>
-    document.querySelectorAll(".has-sub > a").forEach(a => {
-            a.addEventListener("click", e => {
-                e.preventDefault();
-                a.parentElement.classList.toggle("open");
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll(".has-sub > a").forEach(a => {
+            a.addEventListener("click", function(e) {
+                // Chỉ xử lý toggle khi có submenu, không chuyển trang
+                if (this.parentElement.classList.contains('has-sub')) {
+                    e.preventDefault();
+                    const parentLi = this.parentElement;
+                    
+                    // Toggle trạng thái open
+                    parentLi.classList.toggle("open");
+                    
+                    // Đóng/mở submenu
+                    const submenu = parentLi.querySelector('.submenu');
+                    if (submenu) {
+                        if (parentLi.classList.contains('open')) {
+                            submenu.style.display = 'block';
+                        } else {
+                            submenu.style.display = 'none';
+                        }
+                    }
+                }
             });
         });
+
+        // Giữ submenu mở nếu có item con active (có thể đóng bằng click)
+        document.querySelectorAll('.has-sub.active').forEach(activeItem => {
+            if (!activeItem.classList.contains('open')) {
+                activeItem.classList.add('open');
+                const submenu = activeItem.querySelector('.submenu');
+                if (submenu) {
+                    submenu.style.display = 'block';
+                }
+            }
+        });
+    });
     </script>
 </body>
 </html>

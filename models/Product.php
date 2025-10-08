@@ -23,16 +23,12 @@ class Product {
 
         // Nếu bạn có join với bảng product_categories
         $this->category = null;
-        if (isset($data['category'])) {
-            // Nếu là mảng thông tin đầy đủ của category
-            if (is_array($data['category'])) {
-                $this->category = new ProductCategory($data['category']);
-            } else {
-                // Nếu chỉ có id
-                $this->category = new ProductCategory(['id' => $data['category']]);
-            }
-        } elseif (isset($data['category_id'])) {
-            $this->category = new ProductCategory(['id' => $data['category_id']]);
+        if (isset($data['category_ref_id']) || isset($data['category_name'])) {
+            $this->category = new ProductCategory([
+                'id' => $data['category_ref_id'] ?? null,
+                'name' => $data['category_name'] ?? null,
+                'description' => $data['category_description'] ?? null
+            ]);
         }
 
         // --- Xác định người đăng sản phẩm ---

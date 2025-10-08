@@ -8,8 +8,21 @@ class ProductController extends BaseController {
         $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int) $_GET['page'] : $page;
         $limit = isset($_GET['limit']) && is_numeric($_GET['limit']) ? (int) $_GET['limit'] : $limit;
 
-        $query = "SELECT * FROM products ORDER BY created_at DESC";
+        // JOIN với bảng product_categories để lấy tên danh mục
+        $query = "
+            SELECT 
+                p.*, 
+                c.id AS category_ref_id, 
+                c.name AS category_name, 
+                c.description AS category_description
+            FROM products p
+            LEFT JOIN product_categories c ON p.category_id = c.id
+            ORDER BY p.created_at DESC
+        ";
+
         $pagination = $this->basePagination($query, [], $page, $limit);
+
+        // Khởi tạo đối tượng Product cho từng dòng
         $products = array_map(fn($row) => new Product($row), $pagination['data']);
 
         return [

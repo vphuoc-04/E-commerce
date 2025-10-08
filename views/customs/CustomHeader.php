@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 $user = $_SESSION['user'] ?? null;
 ?>
-<link rel="stylesheet" href="http://localhost/WEBBANHANG/views/customs/CustomHeader.css">
+<link rel="stylesheet" href="http://localhost/WEBBANHANG/views/customs/css/CustomHeader.css">
 
 <div class="custom-header">
     <div class="header-right">

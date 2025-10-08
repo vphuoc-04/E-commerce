@@ -1,0 +1,63 @@
+.btn {
+    font-family: "Roboto Condensed", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    transition: background-color 0.3s;
+    min-width: 100%;
+    position: relative;
+}
+
+.btn.active {
+    color: #fff;
+}
+
+.btn[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+.loading {
+    padding-bottom: 10px;
+}
+
+/* Spinner trong button */
+.btn .spinner {
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top: 3px solid #ffffff;
+    border-radius: 50%;
+    width: 11px;
+    height: 11px;
+    animation: spin 0.8s linear infinite;
+    display: inline-block;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+/** IMPORT **/
+.buy-button {
+    background-color: #d5265ee3;  
+    color: white;
+}
+
+.buy-button:hover {
+    background-color: #f78da7;
+}
+
+.cart-button {
+    background-color: #ffc107;
+    color: black;
+}
+
+.cart-button:hover {
+    background-color: #e0a800;
+}

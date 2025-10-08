@@ -9,7 +9,7 @@ function createPaginationUrl($pageName, $pageNumber) {
 }
 ?>
 
-<link rel="stylesheet" href="http://localhost/WEBBANHANG/views/customs/CustomPaginate.css">
+<link rel="stylesheet" href="http://localhost/WEBBANHANG/views/customs/css/CustomPaginate.css">
 
 <div class="pagination">
     <?php if ($currentPage > 1): ?>
