@@ -6,11 +6,9 @@
 aside {
     background-color: #d5265ee3;
     width: 20%;
-    min-width: 250px; /* Đảm bảo tối thiểu không nhỏ hơn */
-    max-width: 250px; /* Giữ kích thước cố định, không giãn */
+    min-width: 280px; /* Đảm bảo tối thiểu không nhỏ hơn */
+    max-width: 280px; /* Giữ kích thước cố định, không giãn */
     height: 100vh; /* luôn cao 100% viewport */
-    overflow-y: auto; /* có thể cuộn khi nội dung vượt quá */
-    overflow-x: hidden; /* không tràn ngang */
     padding: 10px;
     box-sizing: border-box;
     color: white;
@@ -54,6 +52,7 @@ aside a {
     transition: background 0.3s ease, color 0.3s ease; /* Đã thêm: transition cho color */
     width: 100%; /* Đã sửa: chiếm toàn bộ chiều rộng */
     box-sizing: border-box; /* Đã thêm: đảm bảo padding không làm tràn */
+    font-size: 14px;
 }
 
 /* ĐÃ SỬA: Hiệu ứng hover và active */
@@ -110,13 +109,15 @@ aside a.active {
 
 /* ĐÃ THÊM: Style cho submenu items */
 .submenu li {
-    margin: 2px 0; /* Đã điều chỉnh: margin nhỏ hơn */
+    margin: 10px 0; /* Đã điều chỉnh: margin nhỏ hơn */
 }
 
 .submenu a {
-    padding: 10px 15px 10px 30px; /* Đã thêm: indent cho submenu */
+    padding: 10px 15px 10px 20px; /* Đã thêm: indent cho submenu */
     /* background-color: rgba(255, 255, 255, 0.05); */
     font-size: 0.95em; /* Đã thêm: font nhỏ hơn một chút */
+    margin-left: 20px;
+    width: calc(100% - 20px);
 }
 
 .submenu a:hover {
@@ -179,6 +180,7 @@ header {
 .container {
     display: flex;
 }
+
 /* CONTAINER */
 
 /*.HEADERANDCONTENT */
@@ -186,6 +188,8 @@ header {
     display: flex;
     flex-direction: column;
     width: 100%;
+    height: 100vh;
+    overflow: auto;
 }
 /*.HEADERANDCONTENT */
 

@@ -1,16 +1,34 @@
 <?php
+// views/customs/CustomTable.php
 
 if (!isset($columns) || !isset($data)) {
     echo "<p style='color:red'>Thiếu dữ liệu để render bảng</p>";
     return;
 }
+
+// Default values for optional parameters
+if (!isset($filterFields)) {
+    $filterFields = [];
+}
+
+if (!isset($showFilter)) {
+    $showFilter = !empty($filterFields);
+}
+
+if (!isset($currentFilters)) {
+    $currentFilters = $_GET ?? [];
+}
 ?>
-<link rel="stylesheet" href="http://localhost/WEBBANHANg/views/customs/css/CustomTable.css">
+<link rel="stylesheet" href="http://localhost/WEBBANHANG/views/customs/css/CustomTable.css">
 
 <?php include __DIR__ . '/../states/DataChangeState.php'; ?>
 
-
 <div class="custom-table-container">
+    <!-- Include Filter Component -->
+    <?php if ($showFilter && !empty($filterFields)): ?>
+        <?php include 'CustomFilter.php';?>
+    <?php endif; ?>
+
     <div class="describte">
         <?php foreach ($describe as $desc): ?>
             <h3><?= htmlspecialchars($desc["title"]) ?></h3>

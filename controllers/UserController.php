@@ -4,22 +4,101 @@ require_once __DIR__ . '/../models/User.php';
 include 'BaseController.php';
 
 class UserController extends BaseController {
-    public function index($page = 1, $limit = 10) {
-        $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int) $_GET['page'] : $page;
+    protected $apiFileName = "UserApi.php";
+    
+    private $filterableFields = [
+        'email' => 'like',
+        'last_name' => 'like', 
+        'first_name' => 'like',
+        'phone' => 'like',
+        'gender' => 'exact',
+        'user_catalogue_name' => 'exact'
+    ];
+
+    public function getFilterFieldsConfig() {
+        return [
+            [
+                'name' => 'email',
+                'label' => 'Email',
+                'type' => 'text',
+                'placeholder' => 'Tìm theo email...'
+            ],
+            [
+                'name' => 'last_name', 
+                'label' => 'Họ',
+                'type' => 'text',
+                'placeholder' => 'Tìm theo họ...'
+            ],
+            [
+                'name' => 'first_name',
+                'label' => 'Tên',
+                'type' => 'text', 
+                'placeholder' => 'Tìm theo tên...'
+            ],
+            [
+                'name' => 'phone',
+                'label' => 'Số điện thoại',
+                'type' => 'text',
+                'placeholder' => 'Tìm theo SĐT...'
+            ],
+            [
+                'name' => 'gender',
+                'label' => 'Giới tính',
+                'type' => 'select',
+                'options' => [
+                    '1' => 'Nam',
+                    '2' => 'Nữ', 
+                    '3' => 'Khác'
+                ]
+            ],
+            [
+                'name' => 'user_catalogue_name',
+                'label' => 'Nhóm người dùng',
+                'type' => 'select',
+                'options' => [
+                    'admin' => 'Quản trị viên',
+                    'staff' => 'Nhân viên',
+                    'customer' => 'Khách hàng'
+                ]
+            ]
+        ];
+    }
+
+    public function index($page = null, $limit = 10) {
+        $page = $this->getPage();
         $limit = isset($_GET['limit']) && is_numeric($_GET['limit']) ? (int) $_GET['limit'] : $limit;
-        $query = "SELECT * FROM users ORDER BY created_at DESC";
-        $pagination = $this->basePagination($query, [], $page, $limit);
+        
+        $filter = $this->buildFilterConditions($this->filterableFields);
+        
+        $query = "SELECT * FROM users" . $filter['where'] . " ORDER BY created_at DESC";
+        $pagination = $this->basePagination($query, $filter['params'], $page, $limit);
         $users = array_map(fn($row) => new User($row), $pagination['data']);
 
         return [
             'users' => $users,
-            'pagination' => [
-                'total'       => $pagination['total'],
-                'page'        => $pagination['page'],
-                'limit'       => $pagination['limit'],
-                'total_pages' => $pagination['total_pages'],
+            'pagination' => $pagination,
+            'filters' => [
+                'current' => $this->getCurrentFilters(),
+                'hasActive' => $this->hasActiveFilters()
             ]
         ];
+    }
+
+    public function buildUserApiUrl($page = null) {
+        return $this->buildApiUrl('index', $page, array_keys($this->filterableFields));
+    }
+
+    public function buildUserFilterUrl() {
+        return $this->buildCleanFilterUrl('users', array_keys($this->filterableFields), 1);
+    }
+
+
+    public function buildUserPageUrl($page) {
+        return $this->buildPageUrl($page, array_keys($this->filterableFields));
+    }
+
+    public function buildUserClearFilterUrl() {
+        return $this->buildClearFilterUrl();
     }
 
     public function show($id) {

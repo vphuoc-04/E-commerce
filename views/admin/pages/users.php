@@ -1,19 +1,30 @@
 <?php
-include 'views/constants/admin/user.php';
+    include 'views/constants/admin/user.php';
+    include __DIR__ . '/../../../controllers/UserController.php';
 
-$pageNumber = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
-if ($pageNumber < 1) $pageNumber = 1;
+    $userController = new UserController();
 
-$apiUrl = "http://localhost/webbanhang/apis/UserApi.php?route=index&page=$pageNumber";
-$response = file_get_contents($apiUrl);
-$result = json_decode($response, true);
+    // LUÔN có page
+    $pageNumber = $userController->getPage();
 
-$user = $result['data']['users'] ?? [];
-$pagination = $result['data']['pagination'] ?? [];
+    // API URL sẽ tự động bao gồm tất cả filter hiện tại
+    $apiUrl = $userController->buildUserApiUrl($pageNumber);
 
-$columns = $table;
-$data = $user;
-$describe = $describe;
+    $response = file_get_contents($apiUrl);
+    $result = json_decode($response, true);
+
+    $user = $result['data']['users'] ?? [];
+    $pagination = $result['data']['pagination'] ?? [];
+
+    // Lấy filter config từ controller
+    $filterFieldsConfig = $userController->getFilterFieldsConfig();
+
+    $columns = $table;
+    $data = $user;
+    $describe = $describe;
+    $currentFilters = $_GET;
+    $filterFields = $filterFieldsConfig; 
+    $showFilter = true; 
 ?>
 
 <!doctype html>
@@ -22,6 +33,7 @@ $describe = $describe;
     <meta charset="utf-8">
     <title>Quản lý khách hàng</title>
     <link rel="stylesheet" href="http://localhost/WEBBANHANG/views/admin/css/users.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 <div class="container">
