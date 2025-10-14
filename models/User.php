@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/../configs/database.php';
 
+require_once "UserCatalogue.php"; // Thêm model danh mục người dùng
+
 class User {
     public ?int $id;
     public ?string $img;
@@ -12,25 +14,35 @@ class User {
     public ?string $phone;
     public ?string $email;
     public ?string $password;
-    public ?string $userCatalogueName;
+    public ?UserCatalogue $catalogue;
+    public ?bool $isVerified;
     public ?DateTime $createdAt;
     public ?DateTime $updatedAt;
 
     public function __construct(array $data = []) {
-        $this->id                = $data['id'] ?? null;
-        $this->img               = $data['img'] ?? null;
-        $this->lastName          = $data['last_name'] ?? null;
-        $this->middleName        = $data['middle_name'] ?? null;
-        $this->firstName         = $data['first_name'] ?? null;
-        $this->gender            = $data['gender'] ?? null;
-        $this->birthDate         = $data['birth_date'] ?? null;
-        $this->phone             = $data['phone'] ?? null;
-        $this->email             = $data['email'] ?? null;
-        $this->password          = $data['password'] ?? null;
-        $this->userCatalogueName = $data['user_catalogue_name'] ?? null;
+        $this->id          = $data['id'] ?? null;
+        $this->img         = $data['img'] ?? null;
+        $this->lastName    = $data['last_name'] ?? null;
+        $this->middleName  = $data['middle_name'] ?? null;
+        $this->firstName   = $data['first_name'] ?? null;
+        $this->gender      = $data['gender'] ?? null;
+        $this->birthDate   = $data['birth_date'] ?? null;
+        $this->phone       = $data['phone'] ?? null;
+        $this->email       = $data['email'] ?? null;
+        $this->password    = $data['password'] ?? null;
+        $this->isVerified  = isset($data['is_verified']) ? (bool)$data['is_verified'] : null;
 
-        $this->createdAt         = isset($data['created_at']) ? new DateTime($data['created_at']) : null;
-        $this->updatedAt         = isset($data['updated_at']) ? new DateTime($data['updated_at']) : null;
+        $this->catalogue = null;
+        if (isset($data['catalogue_ref_id']) || isset($data['catalogue_name'])) {
+            $this->catalogue = new UserCatalogue([
+                'id'          => $data['catalogue_ref_id'] ?? null,
+                'name'        => $data['catalogue_name'] ?? null,
+                'description' => $data['catalogue_description'] ?? null,
+            ]);
+        }
+
+        $this->createdAt = isset($data['created_at']) ? new DateTime($data['created_at']) : null;
+        $this->updatedAt = isset($data['updated_at']) ? new DateTime($data['updated_at']) : null;
     }
 
     public static function findByEmail($email) {
@@ -68,6 +80,73 @@ class User {
         ");
         $stmt->execute([$refreshToken]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public static function create($data) {
+        $pdo = Database::connect();
+        
+        $stmt = $pdo->prepare("
+            INSERT INTO users (
+                first_name, middle_name, last_name, email, password, 
+                gender, birth_date, phone, catalogue_id, 
+                is_verified, created_at, updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, NOW(), NOW())
+        ");
+        
+        $result = $stmt->execute([
+            $data['first_name'],
+            $data['middle_name'],
+            $data['last_name'],
+            $data['email'],
+            $data['password'],
+            $data['gender'],
+            $data['birth_date'],
+            $data['phone'],
+            $data['catalogue_id']
+        ]);
+        
+        if ($result) {
+            return $pdo->lastInsertId();
+        }
+        return false;
+    }
+
+    public static function updateVerificationStatus($userId, $isVerified = true) {
+        $pdo = Database::connect();
+        
+        $stmt = $pdo->prepare("
+            UPDATE users 
+            SET is_verified = ?, updated_at = NOW() 
+            WHERE id = ?
+        ");
+        
+        return $stmt->execute([$isVerified ? 1 : 0, $userId]);
+    }
+
+    public static function isEmailVerified($email) {
+        $pdo = Database::connect();
+        
+        $stmt = $pdo->prepare("
+            SELECT is_verified FROM users 
+            WHERE email = ? 
+            LIMIT 1
+        ");
+        $stmt->execute([$email]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        return $result ? (bool)$result['is_verified'] : false;
+    }
+
+    public static function findById($userId) {
+        $pdo = Database::connect();
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE id = :id LIMIT 1");
+        $stmt->execute(['id' => $userId]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($row) {
+            return new User($row);
+        }
+        return null;
     }
 
 }

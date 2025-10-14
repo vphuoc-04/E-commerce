@@ -3,6 +3,12 @@
     RewriteBase /webbanhang/
 
     # -------------------------------
+    # HANDLER ROUTES
+    # -------------------------------
+    # /handlers/auth.php?action=register -> handlers/auth.php?action=register
+    RewriteRule ^handlers/([a-zA-Z0-9_-]+)\.php$ handlers/$1.php [L,QSA]
+
+    # -------------------------------
     # ADMIN ROUTES
     # -------------------------------
     # /admin/users  -> index.php?page=users

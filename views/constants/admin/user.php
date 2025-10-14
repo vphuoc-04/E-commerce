@@ -52,7 +52,10 @@ $table = [
     ],
     [
         "name" => "Nhóm thành viên",
-        "render" => fn($item) => "<span>{$item["userCatalogueName"]}</span>"
+        "render" => function($item) {
+            $catalougeName = $item['catalogue']['name'] ?? 'Không có';
+            return "<span>" . htmlspecialchars($catalougeName) . "</span>";
+        }
     ]
 ];
 

@@ -1,4 +1,4 @@
-.product-card {
+.custom-card {
     border: 1px solid #ddd;
     border-radius: 10px;
     padding: 10px;
@@ -8,10 +8,17 @@
     display: flex;
     flex-direction: column; 
     justify-content: space-between;
+    height: 100%;
+    min-height: 300px;
 }
-.product-card img {
+
+.custom-card img {
     width: 150px;
     height: 120px;
     object-fit: cover;
     border-radius: 10px;
+}
+
+.buy-button, .cart-button {
+    margin-top: auto;
 }

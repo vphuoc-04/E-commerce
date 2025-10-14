@@ -5,9 +5,17 @@ if (session_status() === PHP_SESSION_NONE) {
 
 include 'configs/router.php';
 
-if ($page === 'login') {
+if ($page === 'login' || $page === 'register') {
     require_once __DIR__ . '/middlewares/guest.php';
     requireGuest();
+    include $content;
+
+} elseif ($client === 'login' || $client === 'register' || $client === 'verify-otp' || $client === 'resend-otp') {
+    require_once __DIR__ . '/middlewares/guest.php';
+    requireGuest();
+    include $content;
+
+} elseif ($client === 'logout') {
     include $content;
 
 } elseif (!empty($client) || $page === null) {

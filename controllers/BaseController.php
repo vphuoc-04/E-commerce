@@ -193,9 +193,7 @@ class BaseController {
         return $filters;
     }
 
-    /**
-     * Kiểm tra xem có filter đang được áp dụng không
-     */
+    //Kiểm tra xem có filter đang được áp dụng không
     protected function hasActiveFilters($filterFields = []) {
         return !empty($this->getCurrentFilters($filterFields));
     }

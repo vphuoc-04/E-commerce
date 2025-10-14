@@ -1,7 +1,13 @@
 <?php 
 $page = $_GET['page'] ?? 'dashboard';
 $client = $_GET['client'] ?? null; 
+$action = $_GET['action'] ?? '';
 $model = $page; 
+
+if ($action) {
+    require_once __DIR__ . '/../handlers/auth_handler.php';
+    exit;
+}
 
 if (isset($_GET['page'])) {
     $page   = $_GET['page'];
@@ -171,6 +177,31 @@ if ($page) {
         case 'home':
             $content = 'views/client/pages/home.php';
             $title   = "Trang chủ";
+            break;
+
+        case 'login':
+            $content = 'views/client/pages/login.php';
+            $title   = "Trang chủ";
+            break;
+
+        case 'register':
+            $content = 'views/client/pages/register.php';
+            $title   = "Đăng ký";
+            break;
+
+        case 'verify-otp':
+            $content = 'views/client/pages/verify-otp.php';
+            $title   = "Xác thực OTP";
+            break;
+
+        case 'resend-otp':
+            $content = 'views/client/pages/resend-otp.php';
+            $title   = "Gửi lại OTP";
+            break;
+
+        case 'logout':
+            $content = 'views/client/pages/logout.php';
+            $title   = "Đăng xuất";
             break;
 
         case 'products':

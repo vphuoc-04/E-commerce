@@ -65,24 +65,48 @@ class UserController extends BaseController {
     }
 
     public function index($page = null, $limit = 10) {
+        // Lấy trang hiện tại từ query string
         $page = $this->getPage();
         $limit = isset($_GET['limit']) && is_numeric($_GET['limit']) ? (int) $_GET['limit'] : $limit;
-        
+
+        // Xây dựng điều kiện lọc (nếu có)
         $filter = $this->buildFilterConditions($this->filterableFields);
-        
-        $query = "SELECT * FROM users" . $filter['where'] . " ORDER BY created_at DESC";
+
+        // JOIN với bảng user_catalogues để lấy thông tin danh mục
+        $query = "
+            SELECT 
+                u.*, 
+                uc.id AS catalogue_ref_id, 
+                uc.name AS catalogue_name, 
+                uc.description AS catalogue_description
+            FROM users u
+            LEFT JOIN user_catalogues uc ON u.catalogue_id = uc.id
+            " . $filter['where'] . "
+            ORDER BY u.created_at DESC
+        ";
+
+        // Gọi hàm phân trang có sẵn
         $pagination = $this->basePagination($query, $filter['params'], $page, $limit);
+
+        // Ánh xạ dữ liệu thành đối tượng User
         $users = array_map(fn($row) => new User($row), $pagination['data']);
 
+        // Trả kết quả
         return [
             'users' => $users,
-            'pagination' => $pagination,
+                'pagination' => [
+                'total' => $pagination['total'],
+                'page' => $pagination['page'],
+                'limit' => $pagination['limit'],
+                'total_pages' => $pagination['total_pages'],
+            ],
             'filters' => [
                 'current' => $this->getCurrentFilters(),
                 'hasActive' => $this->hasActiveFilters()
             ]
         ];
     }
+
 
     public function buildUserApiUrl($page = null) {
         return $this->buildApiUrl('index', $page, array_keys($this->filterableFields));

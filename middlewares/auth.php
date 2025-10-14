@@ -16,7 +16,7 @@ function requireAuth() {
         $refreshToken = $_COOKIE['refresh_token'] ?? null;
 
         if ($refreshToken) {
-            $ch = curl_init("http://localhost/webbanhang/apis/AuthApi.php?route=refresh");
+            $ch = curl_init("http://localhost/webbanhang/apis/AuthApi.php?action=refresh");
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);

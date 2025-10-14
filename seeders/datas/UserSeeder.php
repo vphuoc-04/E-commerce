@@ -8,30 +8,18 @@ function runUserSeeder($pdo) {
             "middleName" => "Văn",
             "firstName" => "Phước",
             "gender" => 1,
-            "birthDate" => "2000-05-12",
-            "phone" => "0912345678",
-            "email" => "doanvanphuoc@gmail.com",
+            "birthDate" => "2004-09-24",
+            "phone" => "0853404407",
+            "email" => "vanphuoc240904@gmail.com",
             "password" => "12345",
-            "userCatalogueName" => "Khách hàng VIP"
+            "catalogueId" => 1
         ],
-        [
-            "img" => "https://via.placeholder.com/40",
-            "lastName" => "Hồ",
-            "middleName" => "Ngọc",
-            "firstName" => "Hân",
-            "gender" => 0,
-            "birthDate" => "1998-09-20",
-            "phone" => "0987654321",
-            "email" => "hongochan@gmail.com",
-            "password" => "12345", 
-            "userCatalogueName" => "Khách hàng thường"
-        ]
     ];
 
     $sql = "INSERT INTO users 
-        (img, last_name, middle_name, first_name, gender, birth_date, phone, email, password, user_catalogue_name) 
+        (img, last_name, middle_name, first_name, gender, birth_date, phone, email, password, catalogue_id) 
         VALUES 
-        (:img, :lastName, :middleName, :firstName, :gender, :birthDate, :phone, :email, :password, :userCatalogueName)";
+        (:img, :lastName, :middleName, :firstName, :gender, :birthDate, :phone, :email, :password, :catalogueId)";
 
     $stmt = $pdo->prepare($sql);
 
