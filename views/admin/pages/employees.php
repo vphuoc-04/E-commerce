@@ -1,8 +1,25 @@
 <?php
+
+// Render
 include 'views/constants/admin/employee.php';
-$employee = [
-   
-];
+
+$pageNumber = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+if ($pageNumber < 1) $pageNumber = 1;
+
+$apiUrl = "http://localhost/webbanhang/apis/UserApi.php?route=index&page=$pageNumber&catalogue_id=3";
+$response = file_get_contents($apiUrl);
+$result = json_decode($response, true);
+
+$employee = $result['data']['users'] ?? [];
+$pagination = $result['data']['pagination'] ?? [];
+
+$tableConfig = new EmployeeRender();
+
+$describe = $tableConfig->getDescribe();
+$table = $tableConfig->getTable();
+$buttonAction = $tableConfig->getButtonAction();
+$buttonTableActions = $tableConfig->getButtonTableActions();
+
 
 $columns = $table;
 $data = $employee;
@@ -14,7 +31,6 @@ $describe = $describe;
 <html lang="vi">
 <head>
     <meta charset="utf-8">
-    <title>Quản lý đơn hàng</title>
     <link rel="stylesheet" href="http://localhost/WEBBANHANG/views/admin/css/orders.css">
 </head>
 <body>

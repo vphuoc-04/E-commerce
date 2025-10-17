@@ -249,9 +249,40 @@ class AuthController {
     }
 
     public function logout($request) {
+        // Đảm bảo session đã được khởi động
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        // Xóa toàn bộ dữ liệu trong session
+        $_SESSION = [];
+        session_unset();
+        session_destroy();
+
+        // Xóa các cookie liên quan đến đăng nhập
+        if (isset($_COOKIE['token'])) {
+            setcookie("token", "", time() - 3600, "/");
+        }
+
+        if (isset($_COOKIE['refresh_token'])) {
+            // Lưu ý: ở đây nên để time() - 3600 thay vì +7 ngày
+            // vì mục đích là xóa cookie, chứ không phải gia hạn
+            setcookie("refresh_token", "", time() - 3600, "/");
+        }
+
+        if (isset($_COOKIE['PHPSESSID'])) {
+            setcookie("PHPSESSID", "", time() - 3600, "/");
+        }
+
+        // Sau khi logout xong, có thể redirect hoặc trả response JSON
+        // Nếu bạn đang xử lý theo API:
         return [
-            "status" => "success", 
+            "status" => "success",
             "message" => "Đăng xuất thành công"
         ];
+
+        // Nếu bạn dùng giao diện PHP trực tiếp (web app):
+        // header("Location: login");
+        // exit;
     }
 }

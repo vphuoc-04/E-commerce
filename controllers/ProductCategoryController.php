@@ -37,10 +37,20 @@ class ProductCategoryController extends BaseController {
 
     public function store(array $data) {
         $pdo = Database::connect();
-        $stmt = $pdo->prepare("
+        // Duplicate check by name
+        if (!empty($data['name']) && class_exists('ProductCategoryRepository')) {
+            $exists = ProductCategoryRepository::findByName($data['name']);
+            if ($exists) {
+                http_response_code(409);
+                return [ 'error' => 'duplicate', 'field' => 'name', 'message' => 'Tên danh mục đã tồn tại' ];
+            }
+        }
+        $stmt = $pdo->prepare(
+            "
             INSERT INTO product_categories (name, description, created_at)
             VALUES (:name, :description, NOW())
-        ");
+        "
+        );
         $stmt->execute([
             'name'        => $data['name'],
             'description' => $data['description'] ?? null,
@@ -51,13 +61,15 @@ class ProductCategoryController extends BaseController {
 
     public function update($id, array $data) {
         $pdo = Database::connect();
-        $stmt = $pdo->prepare("
+        $stmt = $pdo->prepare(
+            "
             UPDATE product_categories SET 
                 name = :name,
                 description = :description,
                 updated_at = NOW()
             WHERE id = :id
-        ");
+        "
+        );
         $stmt->execute([
             'id'          => $id,
             'name'        => $data['name'],

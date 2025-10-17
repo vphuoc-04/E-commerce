@@ -31,10 +31,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const dropdown = document.getElementById("dropdownMenu");
     const logoutBtn = document.getElementById("logoutBtn");
 
-    function deleteCookie(name, path = "/") {
-        document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=" + path + ";";
-    }
-
     if (avatar) {
         avatar.addEventListener("click", function (e) {
             e.stopPropagation();
@@ -43,9 +39,31 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (logoutBtn) {
-        logoutBtn.addEventListener("click", function (e) {
+        logoutBtn.addEventListener("click", async function (e) {
             e.preventDefault();
-            window.location.href = "views/admin/pages/logout.php"; 
+            
+            try {
+                const res = await fetch("http://localhost/webbanhang/apis/AuthApi.php?action=logout", {
+                    method: "POST",
+                    credentials: "include" // gửi cookie PHPSESSID nếu có
+                });
+                const data = await res.json();
+
+                if (data.status === "success") {
+                    // Xóa cookie phía frontend (phòng trường hợp browser chưa cập nhật)
+                    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    document.cookie = "refresh_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    document.cookie = "PHPSESSID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+                    // Redirect về trang đăng nhập
+                    window.location.href = "login";
+                } else {
+                    alert(data.message || "Đăng xuất thất bại");
+                }
+            } catch (error) {
+                console.error("Lỗi khi đăng xuất:", error);
+                alert("Không thể kết nối đến server.");
+            }
         });
     }
 

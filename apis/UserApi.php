@@ -36,21 +36,37 @@ switch ($path) {
         }
         break;
 
-    case 'store':
+    case 'save': 
         if ($method === 'POST') {
-            $newUser = $userController->store($input);
-            echo response("success", "Tạo user thành công", $newUser);
+            // Nếu có ID thì là update, ngược lại là thêm mới
+            if (!empty($_POST['id'])) {
+                $id = $_POST['id'];
+                $result = $userController->update($id, $input);
+                if (is_array($result) && isset($result['error']) && $result['error'] === 'duplicate') {
+                    http_response_code(409);
+                    echo json_encode([
+                        'status' => 'error',
+                        'message' => $result['message'],
+                        'errors' => [ $result['field'] => $result['message'] ]
+                    ], JSON_UNESCAPED_UNICODE);
+                } else {
+                    echo response("success", "Cập nhật user thành công", $result);
+                }
+            } else {
+                $result = $userController->store($input);
+                if (is_array($result) && isset($result['error']) && $result['error'] === 'duplicate') {
+                    http_response_code(409);
+                    echo json_encode([
+                        'status' => 'error',
+                        'message' => $result['message'],
+                        'errors' => [ $result['field'] => $result['message'] ]
+                    ], JSON_UNESCAPED_UNICODE);
+                } else {
+                    echo response("success", "Tạo user thành công", $result);
+                }
+            }
         } else {
             echo response("error", "Phương thức không hợp lệ");
-        }
-        break;
-
-    case 'update': 
-        if ($method === 'PUT' && isset($_GET['id'])) {
-            $updatedUser = $userController->update($_GET['id'], $input);
-            echo response("success", "Cập nhật user thành công", $updatedUser);
-        } else {
-            echo response("error", "Yêu cầu không hợp lệ");
         }
         break;
 

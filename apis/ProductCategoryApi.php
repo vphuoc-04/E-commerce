@@ -26,7 +26,7 @@ switch ($path) {
     case 'show':
         if (isset($_GET['id'])) {
             $category = $productCategoryController->show($_GET['id']);
-            if ($user) {
+            if ($category) {
                 echo response("success", "Chi tiết nhóm sản phẩm", $category);
             } else {
                 echo response("error", "Không tìm thấy nhóm sản phẩm");
@@ -36,21 +36,37 @@ switch ($path) {
         }
         break;
 
-    case 'store':
+    case 'save': 
         if ($method === 'POST') {
-            $newCategory = $productCategoryController->store($input);
-            echo response("success", "Tạo nhóm sản phẩm thành công", $newCategory);
+            // Nếu có ID thì là update, ngược lại là thêm mới
+            if (!empty($_POST['id'])) {
+                $id = $_POST['id'];
+                $result = $productCategoryController->update($id, $input);
+                if (is_array($result) && isset($result['error']) && $result['error'] === 'duplicate') {
+                    http_response_code(409);
+                    echo json_encode([
+                        'status' => 'error',
+                        'message' => $result['message'],
+                        'errors' => [ $result['field'] => $result['message'] ]
+                    ], JSON_UNESCAPED_UNICODE);
+                } else {
+                    echo response("success", "Cập nhật nhóm sản phẩm thành công", $result);
+                }
+            } else {
+                $result = $productCategoryController->store($input);
+                if (is_array($result) && isset($result['error']) && $result['error'] === 'duplicate') {
+                    http_response_code(409);
+                    echo json_encode([
+                        'status' => 'error',
+                        'message' => $result['message'],
+                        'errors' => [ $result['field'] => $result['message'] ]
+                    ], JSON_UNESCAPED_UNICODE);
+                } else {
+                    echo response("success", "Tạo nhóm sản phẩm thành công", $result);
+                }
+            }
         } else {
             echo response("error", "Phương thức không hợp lệ");
-        }
-        break;
-
-    case 'update': 
-        if ($method === 'PUT' && isset($_GET['id'])) {
-            $updatedCategory = $productCategoryController->update($_GET['id'], $input);
-            echo response("success", "Cập nhật nhóm sản phẩm thành công", $updatedCategory);
-        } else {
-            echo response("error", "Yêu cầu không hợp lệ");
         }
         break;
 

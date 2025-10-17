@@ -14,6 +14,7 @@ class User {
     public ?string $phone;
     public ?string $email;
     public ?string $password;
+    public ?int $catalogueId;
     public ?UserCatalogue $catalogue;
     public ?bool $isVerified;
     public ?DateTime $createdAt;
@@ -31,6 +32,7 @@ class User {
         $this->email       = $data['email'] ?? null;
         $this->password    = $data['password'] ?? null;
         $this->isVerified  = isset($data['is_verified']) ? (bool)$data['is_verified'] : null;
+        $this->catalogueId = $data['catalogue_id'] ?? null;
 
         $this->catalogue = null;
         if (isset($data['catalogue_ref_id']) || isset($data['catalogue_name'])) {
@@ -49,6 +51,18 @@ class User {
         $pdo = Database::connect();
         $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email LIMIT 1");
         $stmt->execute(['email' => $email]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($row) {
+            return new User($row);
+        }
+        return null;
+    }
+
+    public static function findByPhone($phone) {
+        $pdo = Database::connect();
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE phone = :phone LIMIT 1");
+        $stmt->execute(['phone' => $phone]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($row) {

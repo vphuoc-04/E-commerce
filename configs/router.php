@@ -161,6 +161,18 @@ if ($page) {
             ];
             break;
 
+        case 'files':
+            $content = 'views/admin/pages/files.php';
+            $title = "$adminTitle | Hình ảnh - Files";
+            $breadcrumb = [
+                "pageTitle" => "QUẢN LÝ DANH SÁCH HÌNH ẢNH - FILES",
+                "items" => [
+                    ["label" => "Hình ảnh - File"],
+                    ["label" => "Danh sách"]
+                ]
+            ];
+            break;
+
         default:
             $content = 'views/admin/pages/404.php';
             $title = "404 Not Found";

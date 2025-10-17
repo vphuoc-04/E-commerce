@@ -22,3 +22,13 @@ class ProductCategory {
         $this->updatedAt   = isset($data['updated_at']) ? new DateTime($data['updated_at']) : null;
     }
 }
+
+class ProductCategoryRepository {
+    public static function findByName($name) {
+        $pdo = Database::connect();
+        $stmt = $pdo->prepare("SELECT * FROM product_categories WHERE name = :name LIMIT 1");
+        $stmt->execute(['name' => $name]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ? new ProductCategory($row) : null;
+    }
+}

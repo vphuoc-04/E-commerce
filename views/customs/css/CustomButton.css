@@ -14,10 +14,13 @@
 
 .btn.active {
     color: #fff;
+    background-color: #007bff;
 }
 
 .btn[disabled] {
-    opacity: 0.6;
+    opacity: 1;
+    background-color: #e0e0e0;
+    color: #8a8a8a;
     cursor: not-allowed;
 }
 

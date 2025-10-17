@@ -1,0 +1,112 @@
+/* views/customs/css/CustomAlertDialog.css */
+
+.custom-alert-dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.custom-alert-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+}
+
+.custom-alert-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 400px;
+    overflow: hidden;
+    animation: customAlertSlideIn 0.3s ease-out;
+}
+
+@keyframes customAlertSlideIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.custom-alert-header {
+    padding: 20px 24px 0;
+}
+
+.custom-alert-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+    text-align: center;
+}
+
+.custom-alert-body {
+    padding: 20px 24px;
+    text-align: center;
+}
+
+.custom-alert-icon {
+    font-size: 48px;
+    color: #f59e0b;
+    margin-bottom: 12px;
+}
+
+.custom-alert-description {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #6b7280;
+}
+
+.custom-alert-footer {
+    display: flex;
+    gap: 12px;
+    padding: 0 24px 24px;
+}
+
+.custom-alert-btn {
+    flex: 1;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    outline: none;
+}
+
+.custom-alert-cancel {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.custom-alert-cancel:hover {
+    background: #e5e7eb;
+}
+
+.custom-alert-confirm {
+    background: #ef4444;
+    color: white;
+}
+
+.custom-alert-confirm:hover {
+    background: #dc2626;
+}

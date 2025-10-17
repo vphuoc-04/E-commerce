@@ -25,8 +25,14 @@ class CustomBanner implements CustomBannerInterface {
     }
 
     public function render(array $item = []): string {
-        // Gắn CSS riêng của banner
-        $css = '<link rel="stylesheet" href="http://localhost/WEBBANHANG/views/customs/css/CustomBanner.css">';
+        static $resourcesLoaded = false;
+        $html = '';
+
+        if (!$resourcesLoaded) {
+            $html .= '<link rel="stylesheet" href="http://localhost/WEBBANHANG/views/customs/css/CustomBanner.css">';
+            $html .= '<script src="http://localhost/WEBBANHANG/views/customs/js/custom-bannern.js"></script>';
+            $resourcesLoaded = true;
+        }
 
         $style = $this->backgroundImage
             ? "style=\"background-image:url('{$this->backgroundImage}');background-size:cover;background-position:center;\""
@@ -49,6 +55,6 @@ class CustomBanner implements CustomBannerInterface {
             </div>
         ";
 
-        return $css . $html;
+        return $html;
     }
 }

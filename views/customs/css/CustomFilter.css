@@ -1,10 +1,5 @@
 .custom-filter-container {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 8px;
     margin-bottom: 20px;
-    border: 1px solid #e9ecef;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
 .filter-form {
@@ -17,7 +12,6 @@
 .filter-group {
     flex: 1;
     min-width: 180px;
-    padding: 0 10px;
 }
 
 .filter-group label {

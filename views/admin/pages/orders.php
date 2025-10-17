@@ -1,8 +1,18 @@
 <?php
+
+// Render
 include 'views/constants/admin/order.php';
+
 $order = [
     
 ];
+
+$tableConfig = new OrderRender();
+
+$describe = $tableConfig->getDescribe();
+$table = $tableConfig->getTable();
+$buttonAction = $tableConfig->getButtonAction();
+
 $columns = $table;
 $data = $order;
 $describe = $describe;

@@ -9,35 +9,39 @@ class CustomButton implements CustomButtonInterface {
     private string $text;
     private bool $loading;
     private bool $disabled;
-    private string $extraClass;
-    private CustomLoading $spinner;
+    private string $class;
 
-    public function __construct(
-        string $text, 
-        bool $loading = false, 
-        bool $disabled = false, 
-        string $extraClass = "",
-        ?CustomLoading $spinner = null
-    ){
+    public function __construct(string $text,bool $loading = false,bool $disabled = false, string $class = '') {
         $this->text = $text;
         $this->loading = $loading;
         $this->disabled = $disabled;
-        $this->extraClass = $extraClass;
-        $this->spinner = $spinner ?? new CustomLoading("20px", "20px");
+        $this->class = $class;
     }
 
     public function render(): string {
+        static $resourcesLoaded = false;
+        $html = '';
+
+        if (!$resourcesLoaded) {
+            $html .= '<link rel="stylesheet" href="http://localhost/WEBBANHANG/views/customs/css/CustomButton.css">';
+            $html .= '<script src="http://localhost/WEBBANHANG/views/customs/js/custom-button.js"></script>';
+            $resourcesLoaded = true;
+        }
+
         $isDisabled = $this->loading || $this->disabled;
-        $class = $isDisabled ? "btn disabled ".$this->extraClass : "btn active ".$this->extraClass;
+        $class = ($isDisabled ? "btn disabled " : "btn active ") . $this->class;
         $disabledAttr = $isDisabled ? "disabled" : "";
 
-        $css = '<link rel="stylesheet" href="http://localhost/WEBBANHANG/views/customs/css/CustomButton.css">';
-        $js = '<script src="http://localhost/WEBBANHANG/views/customs/js/custom-button.js"></script>';
+        $spinner = new CustomLoading($this->loading, '25px', '25px');
+        $content = $this->loading? $spinner->render() : htmlspecialchars($this->text);
 
-        $content = $this->loading ? $this->spinner->render() : htmlspecialchars($this->text);
-
-        return sprintf('%s%s<div class="loading"><button type="submit" class="%s" %s>%s</button></div>',
-            $css, $js, $class, $disabledAttr, $content
+        $html .= sprintf(
+            '<div class="loading"><button type="submit" class="%s" %s>%s</button></div>',
+            $class,
+            $disabledAttr,
+            $content
         );
+
+        return $html;
     }
 }

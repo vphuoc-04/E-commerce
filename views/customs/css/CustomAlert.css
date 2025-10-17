@@ -1,0 +1,52 @@
+/* Centered dialog overlay */
+.custom-alert-overlay {
+	position: fixed;
+	inset: 0;
+	background: rgba(0,0,0,0.4);
+	display: none;
+	align-items: center;
+	justify-content: center;
+	z-index: 1100;
+}
+
+.custom-alert-dialog {
+	background: #fff;
+	width: 380px;
+	max-width: 90vw;
+	border-radius: 10px;
+	padding: 24px 20px;
+	text-align: center;
+	box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+	opacity: 0;
+	transform: translateY(-8px) scale(0.98);
+	transition: opacity .2s ease, transform .2s ease;
+}
+
+.custom-alert-overlay.show { display: flex; }
+.custom-alert-dialog.show { opacity: 1; transform: translateY(0) scale(1); }
+
+.checkmark {
+	width: 64px;
+	height: 64px;
+	border-radius: 50%;
+	background: #e8f5e9;
+	margin: 0 auto 12px auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.checkmark .tick {
+	width: 28px; height: 28px;
+	border: solid #2e7d32;
+	border-width: 0 0 4px 4px;
+	transform: rotate(-45deg);
+	animation: pop .35s ease;
+}
+
+@keyframes pop { from { transform: scale(0.6) rotate(-45deg); opacity: 0.4; } to { transform: scale(1) rotate(-45deg); opacity: 1; } }
+
+.dialog-title { font-weight: 700; font-size: 18px; color: #222; margin-bottom: 6px; }
+.dialog-message { color: #555; font-size: 14px; }
+
+

@@ -17,8 +17,8 @@ class CustomCard implements CustomCardInterface {
         $html = '';
 
         if (!$resourcesLoaded) {
-            $html .= '<link rel="stylesheet" href="http://localhost/WEBBANHANG/views/customs/css/CustomCard.css"';
-            $html .= '<script src="js/customs/custom-sheet.js"></script>';
+            $html .= '<link rel="stylesheet" href="http://localhost/WEBBANHANG/views/customs/css/CustomCard.css">';
+            $html .= '<script src="http://localhost/WEBBANHANG/views/customs/js/custom-card.js"></script>';
             $resourcesLoaded = true;
         }
 

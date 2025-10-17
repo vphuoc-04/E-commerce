@@ -1,29 +1,50 @@
 <?php
-    include 'views/constants/admin/user.php';
-    include __DIR__ . '/../../../controllers/UserController.php';
 
-    $userController = new UserController();
+// Render
+include_once 'views/constants/admin/user.php';
 
-    // LUÔN có page
-    $pageNumber = $userController->getPage();
+// Controller
+include __DIR__ . '/../../../controllers/UserController.php';
 
-    // API URL sẽ tự động bao gồm tất cả filter hiện tại
-    $apiUrl = $userController->buildUserApiUrl($pageNumber);
+$userController = new UserController();
 
-    $response = file_get_contents($apiUrl);
-    $result = json_decode($response, true);
+// LUÔN có page
+$pageNumber = $userController->getPage();
 
-    $user = $result['data']['users'] ?? [];
-    $pagination = $result['data']['pagination'] ?? [];
+// API URL sẽ tự động bao gồm tất cả filter hiện tại
+$apiUrl = $userController->buildUserApiUrl($pageNumber);
 
-    // Lấy filter config từ controller
-    $filterFieldsConfig = $userController->getFilterFieldsConfig();
+$response = file_get_contents($apiUrl);
+$result = json_decode($response, true);
 
-    $columns = $table;
-    $data = $user;
-    $describe = $describe;
-    $currentFilters = $_GET;
-    $filterFields = $filterFieldsConfig; 
+$user = $result['data']['users'] ?? [];
+$pagination = $result['data']['pagination'] ?? [];
+
+// Lấy filter config từ controller
+$filterFieldsConfig = $userController->getFilterFieldsConfig();
+
+// Build catalogue options for the user sheet select
+$cataloguesOptions = [];
+foreach ($filterFieldsConfig as $fieldCfg) {
+    if (($fieldCfg['name'] ?? '') === 'catalogue_id' && isset($fieldCfg['options']) && is_array($fieldCfg['options'])) {
+        $cataloguesOptions = $fieldCfg['options'];
+        break;
+    }
+}
+
+$tableConfig = new UserRender();
+
+$describe = $tableConfig->getDescribe();
+$table = $tableConfig->getTable();
+$buttonAction = $tableConfig->getButtonAction();
+$buttonTableActions = $tableConfig->getButtonTableActions();
+
+$columns = $table;
+$data = $user;
+$describe = $describe;
+
+$currentFilters = $_GET;
+$filterFields = $filterFieldsConfig; 
     $showFilter = true; 
 ?>
 
@@ -36,6 +57,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+<?php include 'views/includes/admin/StoreAndUpdateUser.php'; ?>
 <div class="container">
     <?php include 'views/customs/CustomTable.php'; ?>
 </div>

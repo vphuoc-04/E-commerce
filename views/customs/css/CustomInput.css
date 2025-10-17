@@ -1,0 +1,44 @@
+input {
+    border: 1px solid rgb(0, 0, 0, 0.2);
+    border-radius: 5px !important;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+input:focus {
+    border-color: #1e60c9;
+}
+
+.group-login-input {
+    display: flex;
+    flex-direction: column;
+    gap: 0; 
+    margin-bottom: 15px;
+}
+
+.login-input {
+    padding: 10px;
+    outline: none;
+    width: 100%;
+    margin: 0 !important; 
+}
+
+.customer-input {
+    padding: 10px;
+    outline: none;
+    width: 100%;
+    margin: 0 !important; 
+}
+
+.text-danger {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 4px !important;
+    display: block;
+    width: 100%;
+    margin-bottom: 0 !important;
+}
+
+.text-danger:empty {
+    display: none;
+}

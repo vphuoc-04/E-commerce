@@ -12,10 +12,19 @@ class UserController extends BaseController {
         'first_name' => 'like',
         'phone' => 'like',
         'gender' => 'exact',
-        'user_catalogue_name' => 'exact'
+        'catalogue_id' => 'exact'
     ];
 
     public function getFilterFieldsConfig() {
+        $pdo = Database::connect();
+        $stmt = $pdo->query("SELECT id, name FROM user_catalogues ORDER BY name ASC");
+        $catalogues = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $catalogueOptions = [];
+        foreach ($catalogues as $catalogue) {
+            $catalogueOptions[$catalogue['id']] = $catalogue['name'];
+        }
+
         return [
             [
                 'name' => 'email',
@@ -52,20 +61,15 @@ class UserController extends BaseController {
                 ]
             ],
             [
-                'name' => 'user_catalogue_name',
+                'name' => 'catalogue_id',
                 'label' => 'Nhóm người dùng',
                 'type' => 'select',
-                'options' => [
-                    'admin' => 'Quản trị viên',
-                    'staff' => 'Nhân viên',
-                    'customer' => 'Khách hàng'
-                ]
+                'options' => $catalogueOptions
             ]
         ];
     }
 
     public function index($page = null, $limit = 10) {
-        // Lấy trang hiện tại từ query string
         $page = $this->getPage();
         $limit = isset($_GET['limit']) && is_numeric($_GET['limit']) ? (int) $_GET['limit'] : $limit;
 
@@ -82,19 +86,28 @@ class UserController extends BaseController {
             FROM users u
             LEFT JOIN user_catalogues uc ON u.catalogue_id = uc.id
             " . $filter['where'] . "
-            ORDER BY u.created_at DESC
+            ORDER BY u.created_at ASC
         ";
 
-        // Gọi hàm phân trang có sẵn
+        // Phân trang
         $pagination = $this->basePagination($query, $filter['params'], $page, $limit);
 
         // Ánh xạ dữ liệu thành đối tượng User
         $users = array_map(fn($row) => new User($row), $pagination['data']);
 
+        // Dùng fetchForeignKeyData để lấy thông tin chi tiết từ FK
+        // foreach ($users as $user) {
+        //     if (!empty($user->catalogue_id)) {
+        //         $user->catalogue = $this->fetchForeignKeyData('user_catalogues', 'catalogue_id', $user->catalogue_id);
+        //     } else {
+        //         $user->catalogue = null;
+        //     }
+        // }
+
         // Trả kết quả
         return [
             'users' => $users,
-                'pagination' => [
+            'pagination' => [
                 'total' => $pagination['total'],
                 'page' => $pagination['page'],
                 'limit' => $pagination['limit'],
@@ -139,9 +152,27 @@ class UserController extends BaseController {
 
     public function store(array $data) {
         $pdo = Database::connect();
+
+        // Duplicate checks
+        if (!empty($data['email']) && User::findByEmail($data['email'])) {
+            http_response_code(409);
+            return [
+                'error' => 'duplicate',
+                'field' => 'email',
+                'message' => 'Email đã tồn tại'
+            ];
+        }
+        if (!empty($data['phone']) && User::findByPhone($data['phone'])) {
+            http_response_code(409);
+            return [
+                'error' => 'duplicate',
+                'field' => 'phone',
+                'message' => 'Số điện thoại đã tồn tại'
+            ];
+        }
         $stmt = $pdo->prepare("
-            INSERT INTO users (img, last_name, middle_name, first_name, gender, birth_date, phone, email, password, user_catalogue_name, created_at) 
-            VALUES (:img, :last_name, :middle_name, :first_name, :gender, :birth_date, :phone, :email, :password, :user_catalogue_name, NOW())
+            INSERT INTO users (img, last_name, middle_name, first_name, gender, birth_date, phone, email, password, catalogue_id, created_at) 
+            VALUES (:img, :last_name, :middle_name, :first_name, :gender, :birth_date, :phone, :email, :password, :catalogue_id, NOW())
         ");
         $stmt->execute([
             'img'               => $data['img'] ?? null,
@@ -153,7 +184,7 @@ class UserController extends BaseController {
             'phone'             => $data['phone'] ?? null,
             'email'             => $data['email'],
             'password'          => password_hash($data['password'], PASSWORD_BCRYPT),
-            'user_catalogue_name' => $data['user_catalogue_name'] ?? null,
+            'catalogue_id' => $data['catalogue_id'] ?? null,
         ]);
 
         return $this->show($pdo->lastInsertId());
@@ -171,7 +202,7 @@ class UserController extends BaseController {
                 birth_date = :birth_date,
                 phone = :phone,
                 email = :email,
-                user_catalogue_name = :user_catalogue_name,
+                catalogue_id = :catalogue_id,
                 updated_at = NOW()
             WHERE id = :id
         ");
@@ -185,7 +216,7 @@ class UserController extends BaseController {
             'birth_date'        => $data['birth_date'] ?? null,
             'phone'             => $data['phone'] ?? null,
             'email'             => $data['email'] ?? null,
-            'user_catalogue_name' => $data['user_catalogue_name'] ?? null,
+            'catalogue_id' => $data['catalogue_id'] ?? null,
         ]);
 
         return $this->show($id);

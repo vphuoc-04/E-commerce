@@ -52,10 +52,19 @@ class ProductController extends BaseController {
         $pdo = Database::connect();
         $userId = $_SESSION['user']['id'] ?? null; // Lấy ID người đăng hiện tại
 
+        // Duplicate by name
+        if (!empty($data['name']) && class_exists('ProductRepository')) {
+            $exists = ProductRepository::findByName($data['name']);
+            if ($exists) {
+                http_response_code(409);
+                return [ 'error' => 'duplicate', 'field' => 'name', 'message' => 'Tên sản phẩm đã tồn tại' ];
+            }
+        }
+
         // Xử lý ảnh upload
         $imagePath = null;
         if ($file && isset($file['tmp_name']) && $file['tmp_name'] !== '') {
-            $uploadDir = __DIR__ . '/../../public/uploads/products/';
+            $uploadDir = __DIR__ . '/../uploads/products/';
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
             }
@@ -93,7 +102,7 @@ class ProductController extends BaseController {
 
         // Nếu có ảnh mới, thì upload và xóa ảnh cũ
         if ($file && isset($file['tmp_name']) && $file['tmp_name'] !== '') {
-            $uploadDir = __DIR__ . '/../../public/uploads/products/';
+            $uploadDir = __DIR__ . '/../uploads/products/';
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
             }
@@ -102,9 +111,9 @@ class ProductController extends BaseController {
             $targetPath = $uploadDir . $fileName;
 
             if (move_uploaded_file($file['tmp_name'], $targetPath)) {
-                // Xóa ảnh cũ
-                if ($imagePath && file_exists(__DIR__ . '/../../public/' . $imagePath)) {
-                    unlink(__DIR__ . '/../../public/' . $imagePath);
+                // Xóa ảnh cũ - SỬA LẠI ĐƯỜNG DẪN
+                if ($current->image && file_exists(__DIR__ . '/../' . $current->image)) {
+                    unlink(__DIR__ . '/../' . $current->image);
                 }
                 $imagePath = 'uploads/products/' . $fileName;
             }
@@ -138,8 +147,12 @@ class ProductController extends BaseController {
         $pdo = Database::connect();
         $product = $this->show($id);
 
-        if ($product && $product->image && file_exists(__DIR__ . '/../../public/' . $product->image)) {
-            unlink(__DIR__ . '/../../public/' . $product->image);
+        // SỬA LỖI: Đường dẫn file ảnh cần bao gồm cả thư mục gốc
+        if ($product && $product->image) {
+            $imagePath = __DIR__ . '/../' . $product->image;
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
         }
 
         $stmt = $pdo->prepare("DELETE FROM products WHERE id = ?");

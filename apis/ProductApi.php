@@ -26,7 +26,7 @@ switch ($path) {
     case 'show':
         if (isset($_GET['id'])) {
             $product = $productController->show($_GET['id']);
-            if ($user) {
+            if ($product) {
                 echo response("success", "Chi tiết nhóm sản phẩm", $product);
             } else {
                 echo response("error", "Không tìm thấy nhóm sản phẩm");
@@ -36,23 +36,24 @@ switch ($path) {
         }
         break;
 
-    case 'store':
+    case 'save': 
         if ($method === 'POST') {
-            $newProduct = $productController->store($input);
-            echo response("success", "Tạo nhóm sản phẩm thành công", $newProduct);
+            $file = $_FILES['image'] ?? null;
+
+            // Nếu có ID thì là update, ngược lại là thêm mới
+            if (!empty($_POST['id']) || !empty($input['id'])) {
+                $id = $_POST['id'] ?? $input['id'];
+                $result = $productController->update($id, $input, $file);
+                echo response("success", "Cập nhật sản phẩm thành công", $result);
+            } else {
+                $result = $productController->store($input, $file);
+                echo response("success", "Tạo sản phẩm thành công", $result);
+            }
         } else {
             echo response("error", "Phương thức không hợp lệ");
         }
         break;
 
-    case 'update': 
-        if ($method === 'PUT' && isset($_GET['id'])) {
-            $updatedProduct = $productController->update($_GET['id'], $input);
-            echo response("success", "Cập nhật nhóm sản phẩm thành công", $updatedProduct);
-        } else {
-            echo response("error", "Yêu cầu không hợp lệ");
-        }
-        break;
 
     case 'destroy': 
         if ($method === 'DELETE' && isset($_GET['id'])) {

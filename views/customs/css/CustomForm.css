@@ -1,0 +1,31 @@
+/* Form layout */
+.user-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Khoảng cách giữa các field */
+}
+
+/* Mỗi field là một flex item */
+.user-form > * {
+    display: flex;
+    flex-direction: column;
+}
+
+.field-label {
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+    font-size: 14px;
+}
+
+.login-form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: 50px;
+}
+
+.login-form h2 {
+    color: #1e60c9;;
+    text-align: center;
+}

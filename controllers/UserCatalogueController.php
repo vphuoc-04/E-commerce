@@ -8,7 +8,7 @@ class UserCatalogueController extends BaseController {
     public function index($page = 1, $limit = 5) {
         $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int) $_GET['page'] : $page;
         $limit = isset($_GET['limit']) && is_numeric($_GET['limit']) ? (int) $_GET['limit'] : $limit;
-        $query = "SELECT * FROM user_catalogues ORDER BY created_at DESC";
+        $query = "SELECT * FROM user_catalogues ORDER BY created_at ASC";
         $pagination = $this->basePagination($query, [], $page, $limit);
         $catalogues = array_map(fn($row) => new UserCatalogue($row), $pagination['data']);
 

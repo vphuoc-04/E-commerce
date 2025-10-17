@@ -55,3 +55,13 @@ class Product {
         $this->updatedAt = isset($data['updated_at']) ? new DateTime($data['updated_at']) : null;
     }
 }
+
+class ProductRepository {
+    public static function findByName($name) {
+        $pdo = Database::connect();
+        $stmt = $pdo->prepare("SELECT * FROM products WHERE name = :name LIMIT 1");
+        $stmt->execute(['name' => $name]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ? new Product($row) : null;
+    }
+}

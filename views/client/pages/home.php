@@ -71,6 +71,7 @@ $banner = new CustomBanner(
                 <?= $card->render($item) ?>
             <?php endforeach; ?>
         </div>
+        <?php include_once __DIR__ . '/../../customs/CustomPaginate.php'; ?>
     </div>
 </body>
 </html>

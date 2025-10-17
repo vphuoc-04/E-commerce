@@ -6,29 +6,52 @@ $username = $user['firstName'] ?? $user['email'] ?? 'Khách';
 
 <header class="site-header">
     <div class="header-inner">
-        <div class="header-left">
-            <a href="home" class="logo">
-                <i class="fas fa-shopping-cart"></i>
-                <span>My web</span>
-            </a>
+        <div class="header-top">
+            <div class="content">
+                <div class="slogan">
+                    Mỹ Phẩm Đẹp - Web mỹ phẩm chính hãng
+                </div>
+                <div class="info">
+                    <i class="fa-regular fa-envelope"></i><span>myphamdepgmail.com</span>
+                    <span>|</span>
+                    <i class="fa-solid fa-phone"></i><span>012.345.678</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="header-main">
+            <div class="content">
+                <a href="home" class="logo">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>My web</span>
+                </a>
+            </div>
         </div>
 
         <nav class="header-nav">
-            <ul>
-                <li><a href="home" class="nav-link">
-                    <span>Trang chủ</span>
-                </a></li>
-                <li><a href="products" class="nav-link">
-                    <span>Sản phẩm</span>
-                </a></li>
-                <li><a href="about" class="nav-link">
-                    <span>Giới thiệu</span>
-                </a></li>
-                <li><a href="cart" class="nav-link cart-link">
-                    <span>Giỏ hàng</span>
-                    <span class="cart-count">0</span>
-                </a></li>
-            </ul>
+            <div class="content">
+                <?php 
+                    include 'views/constants/client/menu.php'; 
+                    $currentPage = getCurrentPage();
+                ?>
+                <ul>
+                    <?php foreach ($menu as $section): ?>
+                        <?php foreach ($section['items'] as $item): ?>
+                            <?php 
+                                $isActive = in_array($currentPage, $item['active']) ? 'active' : '';
+                            ?>
+                            <li>
+                                <a href="<?= $item['to'] ?>" class="nav-link <?= $isActive ?>">
+                                    <?= $item['label'] ?>
+                                    <?php if (isset($item['badge']) && $item['badge'] > 0): ?>
+                                        <span class="cart-count"><?= $item['badge'] ?></span>
+                                    <?php endif; ?>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
         </nav>
 
         <?php /*
@@ -76,12 +99,13 @@ $username = $user['firstName'] ?? $user['email'] ?? 'Khách';
         </div>
         */ ?>
 
-        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+        <!-- <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
             <i class="fas fa-bars"></i>
-        </button>
+        </button> -->
     </div>
 
     <!-- Mobile Navigation -->
+     <?php /*
     <div class="mobile-nav" id="mobileNav">
         <div class="mobile-nav-content">
             <div class="mobile-nav-header">
@@ -155,6 +179,7 @@ $username = $user['firstName'] ?? $user['email'] ?? 'Khách';
             </div>
         </div>
     </div>
+    */ ?>
 </header>
 
 <script>

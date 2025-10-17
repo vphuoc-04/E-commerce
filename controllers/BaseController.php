@@ -197,4 +197,12 @@ class BaseController {
     protected function hasActiveFilters($filterFields = []) {
         return !empty($this->getCurrentFilters($filterFields));
     }
+
+    // Lấy thông tin thông qua FK
+    // protected function fetchForeignKeyData($table, $foreignKeyField, $foreignKeyValue) {
+    //     $pdo = Database::connect();
+    //     $stmt = $pdo->prepare("SELECT * FROM {$table} WHERE id = ?");
+    //     $stmt->execute([$foreignKeyValue]);
+    //     return $stmt->fetch(PDO::FETCH_ASSOC);
+    // }
 }

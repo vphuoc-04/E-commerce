@@ -36,21 +36,19 @@ switch ($path) {
         }
         break;
 
-    case 'store': 
+    case 'save': 
         if ($method === 'POST') {
-            $newCatalogue = $userCatalogueController->store($input);
-            echo response("success", "Tạo catalogue thành công", $newCatalogue);
+            // Nếu có ID thì là update, ngược lại là thêm mới
+            if (!empty($_POST['id'])) {
+                $id = $_POST['id'];
+                $result = $userCatalogueController->update($id, $input);
+                echo response("success", "Cập nhật catalogue thành công", $result);
+            } else {
+                $result = $userCatalogueController->store($input);
+                echo response("success", "Tạo catalogue thành công", $result);
+            }
         } else {
             echo response("error", "Phương thức không hợp lệ");
-        }
-        break;
-
-    case 'update': 
-        if ($method === 'PUT' && isset($_GET['id'])) {
-            $updatedCatalogue = $userCatalogueController->update($_GET['id'], $input);
-            echo response("success", "Cập nhật catalogue thành công", $updatedCatalogue);
-        } else {
-            echo response("error", "Yêu cầu không hợp lệ");
         }
         break;
 

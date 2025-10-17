@@ -115,6 +115,13 @@ $menu = [
                 "to" => createMenuLink("orders"),
                 "links" => [],
             ],
+            [
+                "icon" => "fa-solid fa-file-invoice",
+                "label" => "Hình ảnh - Files",
+                "active" => ["files"],
+                "to" => createMenuLink("files"),
+                "links" => [],
+            ],
         ]
     ],
     [

@@ -5,8 +5,8 @@ class UserCatalogue {
     public ?int $id;
     public ?string $name;
     public ?string $description;
-    public ?User $addedBy;   
-    public ?User $updatedBy;   
+    public ?int $addedBy;
+    public ?int $updatedBy;  
     public ?DateTime $createdAt;
     public ?DateTime $updatedAt;
 
@@ -15,8 +15,8 @@ class UserCatalogue {
         $this->name        = $data['name'] ?? null;
         $this->description = $data['description'] ?? null;
 
-        $this->addedBy     = isset($data['added_by']) ? new User($data['added_by']) : null;
-        $this->updatedBy   = isset($data['updated_by']) ? new User($data['updated_by']) : null;
+        $this->addedBy   = $data['added_by'] ?? null;
+        $this->updatedBy = $data['updated_by'] ?? null;
 
         $this->createdAt   = isset($data['created_at']) ? new DateTime($data['created_at']) : null;
         $this->updatedAt   = isset($data['updated_at']) ? new DateTime($data['updated_at']) : null;

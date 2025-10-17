@@ -56,6 +56,19 @@ function buildPageUrl($page) {
     
     return '?' . http_build_query($queryParams);
 }
+
+function getFilterDisplayValue($fieldName, $value, $filterFields) {
+    if (trim($value) === '') return '';
+    
+    // Tìm field config
+    foreach ($filterFields as $field) {
+        if ($field['name'] === $fieldName && isset($field['options'][$value])) {
+            return $field['options'][$value]; // Trả về label thay vì value
+        }
+    }
+    
+    return $value; // Mặc định trả về giá trị gốc
+}
 ?>
 
 <link rel="stylesheet" href="http://localhost/WEBBANHANG/views/customs/css/CustomFilter.css">
@@ -115,6 +128,8 @@ function buildPageUrl($page) {
         <strong>Bộ lọc đang áp dụng:</strong>
         <?php foreach ($activeFilters as $field => $value): 
             $fieldLabel = '';
+            $displayValue = getFilterDisplayValue($field, $value, $filterFields);
+            
             foreach ($filterFields as $filterField) {
                 if ($filterField['name'] === $field) {
                     $fieldLabel = $filterField['label'] ?? $field;
@@ -123,7 +138,7 @@ function buildPageUrl($page) {
             }
         ?>
             <span class="filter-tag">
-                <?= htmlspecialchars($fieldLabel) ?>: <?= htmlspecialchars($value) ?>
+                <?= htmlspecialchars($fieldLabel) ?>: <?= htmlspecialchars($displayValue) ?>
                 <a href="<?= buildUrlWithoutFilter($field) ?>" class="remove-filter" title="Xóa bộ lọc">×</a>
             </span>
         <?php endforeach; ?>
