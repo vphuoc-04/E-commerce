@@ -1,5 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+
 * {
     margin: 0;
+}
+
+a {
+    text-decoration: none;
 }
 
 .container {
@@ -9,7 +15,6 @@
     align-items: center;
     justify-content: space-between;
 }
-
 
 /** HEADER **/
 .container header {
@@ -34,15 +39,121 @@
 .container header .header-inner .header-main {
     background-color: #FFF6F7;
     height: 80px;
+    display: flex;
+    align-items: center;
+    font-size: 30px;
+}
+
+.header-main .content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header-search {
+    position: relative;
+}
+
+.search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-input {
+    width: 160px;
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    outline: none;
+    transition: all 0.3s ease;
+    font-size: 15px;
+    width: 250px;
+}
+
+/* Khi click vào input → mở rộng */
+.search-input:focus {
+    width: 600px;
+    border-color: #f78da7;
+    box-shadow: 0 0 4px #f78da755;
+}
+
+/* Icon search */
+.search-btn {
+    position: absolute;
+    right: 6px;
+    background: transparent;
+    border: none;
+    color: #f78da7;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* --- Dropdown gợi ý --- */
+.search-dropdown {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    width: 100%;
+    background: white;
+    border: 1px solid #f1f1f1;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    display: none; /* ẩn mặc định */
+    max-height: 250px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+/* Khi input được focus thì hiển thị dropbox */
+.search-box:focus-within .search-dropdown {
+    display: block;
+}
+
+.search-dropdown ul {
+    list-style: none;
+    margin: 0;
+    padding: 8px 0;
+}
+
+.search-dropdown ul li {
+    padding: 8px 16px;
+}
+
+.search-dropdown ul li a {
+    color: #333;
+    text-decoration: none;
+    font-size: 15px;
+    display: block;
+}
+
+.search-dropdown ul li:hover {
+    background-color: #fdf2f4;
+}
+
+.container header .header-inner .header-main .logo {
+
+}
+
+.container header .header-inner .header-main .logo span {
+    font-family: "Great Vibes", cursive;
+    color: #d5265ee3;  
 }
 
 .container header .header-inner .header-nav {
     background-color: white;
-    height: 50px;
-    display: flex;
-    align-items: center;
+    height: 20px; /* Tăng chiều cao để chứa menu */
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 18px;
+    display: flex;
+    align-items: center;
+}
+
+.container header .header-inner .header-nav .content {
+    padding-top: 15px;
 }
 
 .container header .header-inner .header-nav ul {
@@ -51,6 +162,7 @@
     list-style: none;
     margin: 0;
     padding: 0;      
+    align-items: center;
 }
 
 .container header .header-inner .header-nav ul li a {
@@ -67,6 +179,149 @@
     color: #f78da7;
 }
 
+/* --- AUTH & USER MENU --- */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding-top: 5px;
+}
+
+.auth-buttons {
+    display: flex;
+    width: 100px;
+    padding-right: 150px;
+    gap: 5px;
+}
+
+.auth-buttons .btn {
+    text-decoration: none;
+    font-size: 16px;
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.btn-login {
+    background-color: #f78da7;
+}
+
+.btn-register {
+    background-color: #ffb6c1;
+}
+
+.btn-login:hover,
+.btn-register:hover {
+    opacity: 0.8;
+}
+
+/* --- Dropdown user menu --- */
+.user-menu {
+    position: relative;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.user-avatar i {
+    background: #f78da7;
+    color: white;
+    border-radius: 50%;
+    padding: 6px;
+    font-size: 14px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.welcome {
+    font-size: 12px;
+    color: #666;
+}
+
+.username {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+}
+
+.user-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    min-width: 200px;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    border: 1px solid #e0e0e0;
+}
+
+.user-menu.active .user-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.user-dropdown .dropdown-item {
+    padding: 12px 16px;
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.2s;
+}
+
+.user-dropdown .dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.user-dropdown .dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #f78da7;
+}
+
+.user-dropdown .dropdown-item i {
+    width: 16px;
+    text-align: center;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background-color: #e0e0e0;
+    margin: 4px 0;
+}
+
+.logout {
+    color: #dc3545 !important;
+}
+
+.logout:hover {
+    background-color: #fff5f5 !important;
+}
+
 .header-inner .content {
     width: 100%;
     max-width: 1200px;
@@ -74,67 +329,221 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 0 20px;
 }
+
+/* --- ORDER BUTTON (Đơn hàng) --- */
+.order-link {
+    position: relative;
+}
+
+.order-btn {
+    display: flex;
+    justify-content: center; /* căn giữa icon ngang */
+    align-items: center;      /* căn giữa icon dọc */
+    background-color: #fff;
+    border: 1px solid #f78da7;
+    color: #f78da7;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;       /* làm tròn */
+    text-decoration: none;
+    font-size: 16px;
+    transition: all 0.2s ease;
+    box-sizing: border-box;   /* đảm bảo border không làm méo */
+}
+
+
+.order-btn i {
+    font-size: 16px;
+}
+
+.order-btn:hover {
+    background-color: #f78da7;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(247, 141, 167, 0.3);
+}
+
+.order-label {
+    display: none; /* ẩn label khi màn hình nhỏ */
+}
+
+@media (min-width: 768px) {
+    .order-label {
+        display: inline;
+    }
+}
+
+
+
+
 
 /** MAIN **/
 .container main {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    width: 100%;
 }
 
+.page-content {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 20px 0;
+}
+
+
+
+
+
+
+
+
+
 /** FOOTER **/
-.container footer {
+.footer-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow: hidden;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin-top: 40px;
+}
+
+/* --- PHẦN TRÊN --- */
+.footer-top {
     background-color: #f78da7;
+    color: #fff;
     width: 100%;
     display: flex;
     justify-content: center;
-    height: 100px;
-    align-items: center;
-}
-
-.footer-container {
-    background: #1a1a1a;
-    color: #fff;
     padding: 40px 0;
-    text-align: center;
-    font-family: 'Arial', sans-serif;
 }
 
 .footer-content {
-    max-width: 1100px;
-    margin: 0 auto;
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    flex-wrap: wrap;
     padding: 0 20px;
 }
 
+.footer-column {
+    flex: 1 1 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* --- Logo column --- */
+.footer-logo {
+    text-align: center;
+    align-items: center;
+}
+
 .footer-logo img {
-    width: 80px;
-    height: 80px;
-    border-radius: 12px;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
     object-fit: cover;
+    border: 2px solid #ffcc00;
+    transition: 0.3s;
+}
+
+.footer-logo img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
 }
 
 .footer-logo h3 {
-    margin-top: 10px;
+    margin-top: 12px;
     font-size: 22px;
     color: #ffcc00;
 }
 
-.footer-info {
-    margin-top: 20px;
-    line-height: 1.8;
-}
-
-.footer-desc {
-    margin-top: 15px;
-    font-style: italic;
-    color: #cccccc;
-}
-
-.footer-bottom {
-    border-top: 1px solid #333;
-    margin-top: 30px;
-    padding-top: 15px;
+.footer-logo .tagline {
     font-size: 14px;
-    color: #aaaaaa;
+    color: #ffffff;
+    margin-top: 5px;
+}
+
+/* --- Info & Description --- */
+.footer-info h4,
+.footer-desc h4 {
+    color: #ffcc00;
+    margin-bottom: 12px;
+    font-size: 18px;
+}
+
+.footer-info p,
+.footer-desc p {
+    color: #ffffff;
+    line-height: 1.8;
+    font-size: 15px;
+    margin: 4px 0;
+}
+
+.footer-info i {
+    color: #ffcc00;
+    margin-right: 8px;
+}
+
+/* Responsive footer */
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 30px;
+    }
+    .footer-column {
+        flex: 1 1 100%;
+        align-items: center;
+    }
+}
+
+/* --- PHẦN DƯỚI --- */
+.footer-bottom {
+    width: 100%;
+    background-color: #2d2d2d;
+    text-align: center;
+    padding: 15px 10px;
+    font-size: 14px;
+    color: white;
+    margin-top: 0;
+}
+
+.footer-bottom p {
+    margin: 0;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 40px;
+    }
+
+    .footer-logo img {
+        width: 80px;
+        height: 80px;
+    }
+
+    .footer-column h4 {
+        font-size: 17px;
+    }
+    
+    .page-content {
+        gap: 20px;
+        padding: 15px 0;
+    }
+    
+    .user-details {
+        display: none; /* Ẩn chi tiết user trên mobile */
+    }
 }

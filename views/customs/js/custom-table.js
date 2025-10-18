@@ -101,7 +101,7 @@ function edit(entity, id, options = {}) {
         },
         product: {
             apiUrl: `http://localhost/webbanhang/apis/ProductApi.php?route=show&id=${id}`,
-            sheetSelector: '.custom-sheet.product-sheet',
+            sheetSelector: '.custom-sheet.user-sheet',
             reloadUrl: '?edit=' + id
         },
         catalogue: {
@@ -109,9 +109,9 @@ function edit(entity, id, options = {}) {
             sheetSelector: '.custom-sheet.user-sheet',
             reloadUrl: '?edit=' + id
         },
-        productCategory: {
+        category: {
             apiUrl: `http://localhost/webbanhang/apis/ProductCategoryApi.php?route=show&id=${id}`,
-            sheetSelector: '.custom-sheet.product-category-sheet',
+            sheetSelector: '.custom-sheet.user-sheet',
             reloadUrl: '?edit=' + id
         }
     };
@@ -182,5 +182,5 @@ function editUser(userId, options = {}) {
     return edit('user', userId, options);
 }
 function editProductCategory(categoryId, options = {}) {
-    return edit('productCategory', categoryId, options);
+    return edit('category', categoryId, options);
 }

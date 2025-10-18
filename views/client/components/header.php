@@ -1,7 +1,44 @@
 <?php
+include_once 'views/customs/CustomButton.php';
+include_once 'views/customs/CustomInput.php';
+
+$searchInput = new CustomInput(
+    type: 'text',
+    class: 'search-input',
+    placeholder: 'Tìm kiếm...',
+    name: 'search',
+    required: false
+);
+
+// $searchButton = new CustomButton(
+//     text: '<i class="fas fa-search"></i>',
+//     loading: false,
+//     disabled: false,
+//     class: 'search-btn'
+// );
+
 $isLoggedIn = isset($_SESSION['user']);
 $user = $_SESSION['user'] ?? null;
 $username = $user['firstName'] ?? $user['email'] ?? 'Khách';
+
+// GỌI API để lấy danh mục sản phẩm
+$apiUrl = "http://localhost/WEBBANHANG/apis/ProductCategoryApi.php?route=index";
+
+$response = file_get_contents($apiUrl);
+$data = json_decode($response, true);
+
+// Kiểm tra response hợp lệ
+if (
+    isset($data['status']) &&
+    $data['status'] === 'success' &&
+    isset($data['data']['categories'])
+) {
+    $categories = $data['data']['categories'];
+    $pagination = $data['data']['pagination'] ?? null;
+} else {
+    $categories = [];
+    $pagination = null;
+}
 ?>
 
 <header class="site-header">
@@ -22,9 +59,20 @@ $username = $user['firstName'] ?? $user['email'] ?? 'Khách';
         <div class="header-main">
             <div class="content">
                 <a href="home" class="logo">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span>My web</span>
+                    <!-- <i class="fas fa-shopping-cart"></i> -->
+                    <span>Mỹ Phẩm Đẹp</span>
                 </a>
+                <div class="header-search">
+                    <div class="search-box">
+                        <!-- <input type="text" class="search-input" placeholder="Tìm kiếm sản phẩm..."> -->
+                        <?= $searchInput->render() ?>
+                        <button class="search-btn"><i class="fas fa-search"></i></button>
+
+                        <div class="search-dropdown">
+
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -50,7 +98,51 @@ $username = $user['firstName'] ?? $user['email'] ?? 'Khách';
                             </li>
                         <?php endforeach; ?>
                     <?php endforeach; ?>
+
+                    <?php if (!empty($categories)): ?>
+                        <ul class="product-category">
+                            <?php foreach ($categories as $cat): ?>
+                                <li>
+                                    <a href="products?category=<?= $cat['id'] ?>">
+                                        <?= htmlspecialchars($cat['name']) ?>
+                                    </a>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php endif; ?>
                 </ul>
+
+                <div class="header-right">
+                    <?php if ($isLoggedIn): ?>
+                        <div class="user-menu">
+                            <div class="user-info">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="user-details">
+                                    <span class="welcome">Xin chào,</span>
+                                    <span class="username"><?= htmlspecialchars($username) ?></span>
+                                </div>
+                            </div>
+                            <div class="user-dropdown">
+                                <a href="profile" class="dropdown-item">Thông tin cá nhân</a>
+                                <a href="orders" class="dropdown-item"><i class="fas fa-shopping-bag"></i> Đơn hàng</a>
+                                <a href="settings" class="dropdown-item">Cài đặt</a>
+                                <div class="dropdown-divider"></div>
+                                <a href="logout" class="dropdown-item logout">Đăng xuất</a>
+                            </div>
+                        </div>
+                    <?php else: ?>
+                        <div class="auth-buttons">
+                            <a href="login" class="btn btn-login">
+                                 Đăng nhập
+                            </a>
+                            <a href="register" class="btn btn-register">
+                                 Đăng ký
+                            </a>
+                        </div>
+                    <?php endif; ?>
+                </div>
             </div>
         </nav>
 

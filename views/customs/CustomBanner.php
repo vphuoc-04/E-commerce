@@ -1,6 +1,6 @@
 <?php
 interface CustomBannerInterface {
-    public function render(array $item): string;
+    public function render(array $item = []): string;
 }
 
 class CustomBanner implements CustomBannerInterface {
@@ -30,26 +30,30 @@ class CustomBanner implements CustomBannerInterface {
 
         if (!$resourcesLoaded) {
             $html .= '<link rel="stylesheet" href="http://localhost/WEBBANHANG/views/customs/css/CustomBanner.css">';
-            $html .= '<script src="http://localhost/WEBBANHANG/views/customs/js/custom-bannern.js"></script>';
+            $html .= '<script src="http://localhost/WEBBANHANG/views/customs/js/custom-banner.js"></script>';
             $resourcesLoaded = true;
         }
+        
+        $title = htmlspecialchars($this->title, ENT_QUOTES, 'UTF-8');
+        $subtitle = htmlspecialchars($this->subtitle, ENT_QUOTES, 'UTF-8');
 
         $style = $this->backgroundImage
-            ? "style=\"background-image:url('{$this->backgroundImage}');background-size:cover;background-position:center;\""
+            ? "style=\"background-image:url('" . htmlspecialchars($this->backgroundImage, ENT_QUOTES, 'UTF-8') . "');background-size:cover;background-position:center;\""
             : '';
 
         $buttonHtml = '';
         if ($this->buttonText) {
-            $href = htmlspecialchars($this->buttonLink ?? '#');
-            $buttonHtml = "<a href='$href' class='banner-button'>{$this->buttonText}</a>";
+            $href = htmlspecialchars($this->buttonLink ?? '#', ENT_QUOTES, 'UTF-8');
+            $buttonText = htmlspecialchars($this->buttonText, ENT_QUOTES, 'UTF-8');
+            $buttonHtml = "<a href=\"$href\" class=\"banner-button\">$buttonText</a>";
         }
 
-        $html = "
+        $html .= "
             <div class='custom-banner' $style>
                 <div class='banner-overlay'></div>
                 <div class='banner-content'>
-                    <h1>{$this->title}</h1>
-                    " . ($this->subtitle ? "<p>{$this->subtitle}</p>" : "") . "
+                    <h1>$title</h1>
+                    " . ($this->subtitle ? "<p>$subtitle</p>" : "") . "
                     $buttonHtml
                 </div>
             </div>

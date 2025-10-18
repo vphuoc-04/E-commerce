@@ -22,6 +22,7 @@ elseif (isset($_GET['client'])) {
 else {
     $page   = null;
     $client = 'home'; 
+     $_GET['client'] = 'home';
 }
 
 
@@ -234,6 +235,11 @@ if ($page) {
         case 'about':
             $content = 'views/client/pages/about.php';
             $title   = "Giới thiệu";
+            break;
+
+        case 'single-product':
+            $content = 'views/client/pages/single-product.php';
+            $title   = "Chi tiết sản phẩm";
             break;
 
         default:

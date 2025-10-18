@@ -9,7 +9,11 @@
 <body>
     <div class="container">
         <?php include 'header.php'; ?>
-        <?php include $content; ?>
+
+        <main class="page-content">
+            <?php include $content; ?>
+        </main>
+        
         <?php include 'footer.php'; ?>
     </div>
 </body>

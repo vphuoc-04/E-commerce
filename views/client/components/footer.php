@@ -18,21 +18,28 @@ $logo        = htmlspecialchars($business['logo'] ?? 'http://localhost/WEBBANHAN
 <link rel="stylesheet" href="http://localhost/WEBBANHANG/views/client/css/component.css">
 
 <footer class="footer-container">
-    <div class="footer-content">
-        <div class="footer-logo">
-            <img src="<?= $logo ?>" alt="Logo doanh nghiệp">
-            <h3><?= $name ?></h3>
+    <div class="footer-top">
+        <div class="footer-content">
+            <div class="footer-column footer-logo">
+                <!-- <img src="<?= $logo ?>" alt="Logo doanh nghiệp"> -->
+                <h3><?= $name ?></h3>
+                <p class="tagline">Mỹ phẩm chính hãng - Tự tin mỗi ngày</p>
+            </div>
+
+            <div class="footer-column footer-info">
+                <h4>Liên hệ</h4>
+                <p><i class="fa-solid fa-location-dot"></i> <?= $address ?></p>
+                <p><i class="fa-solid fa-envelope"></i> <?= $email ?></p>
+                <p><i class="fa-solid fa-phone"></i> <?= $phone ?></p>
+            </div>
+
+            <div class="footer-column footer-desc">
+                <h4>Giới thiệu</h4>
+                <p><?= $description ?></p>
+            </div>
         </div>
-        <div class="footer-info">
-            <p><strong>Địa chỉ:</strong> <?= $address ?></p>
-            <p><strong>Email:</strong> <?= $email ?></p>
-            <p><strong>Điện thoại:</strong> <?= $phone ?></p>
-        </div>
-        <div class="footer-desc">
-            <p><?= $description ?></p>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; <?= date('Y') ?> <?= $name ?>. All rights reserved.</p>
-        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; <?= date('Y') ?> <?= $name ?>. All rights reserved.</p>
     </div>
 </footer>

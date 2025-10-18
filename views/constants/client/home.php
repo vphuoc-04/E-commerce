@@ -3,14 +3,30 @@ $home = [
     [
         "name" => "Ảnh",
         "render" => function($item) {
+            $id = htmlspecialchars($item['id'] ?? '');
             $image = htmlspecialchars($item['image'] ?? '');
-            return "<img src='{$image}' alt=''>";
+            $name = htmlspecialchars($item['name'] ?? 'Sản phẩm');
+
+            // Khi click vào ảnh -> sang trang single product
+            return "
+                <a href='?client=single-product&id={$id}&name={$name}' class='product-link'>
+                    <img src='{$image}' alt='{$name}' style='width:60px;height:60px;object-fit:cover;border-radius:8px;'>
+                </a>
+            ";
         }
     ],
     [
         "name" => "Tên sản phẩm",
         "render" => function($item) {
-            return "<span>" . htmlspecialchars($item['name'] ?? 'Không có tên') . "</span>";
+            $id = htmlspecialchars($item['id'] ?? '');
+            $name = htmlspecialchars($item['name'] ?? 'Không có tên');
+
+            // Khi click vào tên -> sang trang single product
+            return "
+                <a href='?client=single-product&id={$id}&name={$name}' class='product-name-link'>
+                    {$name}
+                </a>
+            ";
         }
     ],
     [
